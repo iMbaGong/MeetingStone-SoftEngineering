@@ -5,6 +5,8 @@ import com.example.demo.config.JwtConfig;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.SignatureException;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.annotation.Resource;
@@ -17,7 +19,10 @@ public class TokenInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-
+        if (HttpMethod.OPTIONS.toString().equals(request.getMethod())) {
+            response.setStatus(HttpStatus.NO_CONTENT.value());
+            return true;
+        }
         String token = request.getHeader(jwtConfig.getHeader());
         System.out.println(request);
         if(StringUtils.isEmpty(token)){

@@ -29,7 +29,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(getTokenInterceptor())
                 .addPathPatterns("/**")
                 .excludePathPatterns("/index.html")
-                //.excludePathPatterns("/api/login")
+                .excludePathPatterns("/api/login")
                 .excludePathPatterns("/api/logout")
                 .excludePathPatterns("/api/hello");
     }
