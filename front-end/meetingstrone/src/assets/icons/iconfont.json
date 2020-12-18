@@ -1,0 +1,30 @@
+{
+  "id": "2272897",
+  "name": "MeetingStone",
+  "font_family": "iconfont",
+  "css_prefix_text": "el-icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "6523409",
+      "name": "course",
+      "font_class": "course",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "6881674",
+      "name": "Personal management-人员管理",
+      "font_class": "Personalmanagement-",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "8570641",
+      "name": "Personal center -icon",
+      "font_class": "Personalcenter-icon",
+      "unicode": "e63b",
+      "unicode_decimal": 58939
+    }
+  ]
+}

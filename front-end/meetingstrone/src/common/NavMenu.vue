@@ -1,0 +1,52 @@
+<template>
+  <el-menu
+    :default-active="'/index'"
+    router
+    mode="horizontal"
+    background-color="white"
+    text-color="darkblue"
+    active-text-color="blue"
+    >
+    <el-menu-item v-for="(item,i) in navList" :index="item.name" :key="i">
+      {{item.navItem}}
+    </el-menu-item>
+
+    <el-menu-item style="float: right" @click="logout" index="/Login">
+      退出登录
+    </el-menu-item>
+    <el-badge :value="12" style="float:right;margin:25px 15px 0 0;">
+      <i class="el-icon-bell"/>
+    </el-badge>
+  </el-menu>
+</template>
+
+<script>
+export default {
+  name: "NavMenu",
+  data(){
+    return{
+      navList:[
+        {name:"Index",navItem:"用户中心"},
+        {name:"",navItem:"发布请求"},
+        {name:"Reply",navItem:"响应请求"},
+      ]
+    }
+  },
+  methods:{
+    logout(){
+      var _this = this
+      this.$axios.get('/logout').then(resp => {
+        if (resp.data.code === 200) {
+          // 前后端状态保持一致
+          _this.$store.commit('logout')
+          _this.$router.replace('/login')
+        }
+      })
+    }
+  }
+}
+</script>
+
+<style scoped>
+
+</style>
