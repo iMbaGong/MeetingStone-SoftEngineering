@@ -1,6 +1,6 @@
 <template>
   <el-menu
-    :default-active="'/index'"
+    :default-active="'Index'"
     router
     mode="horizontal"
     background-color="white"
@@ -14,8 +14,8 @@
     <el-menu-item style="float: right" @click="logout" index="/Login">
       退出登录
     </el-menu-item>
-    <el-badge :value="12" style="float:right;margin:25px 15px 0 0;">
-      <i class="el-icon-bell"/>
+    <el-badge :value="12" style="float:right;margin:17px 15px 0 0;">
+      <el-button icon="el-icon-bell" circle></el-button>
     </el-badge>
   </el-menu>
 </template>

@@ -13,6 +13,8 @@ import java.util.Date;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "apply")
 @JsonIgnoreProperties({"handle","hibernateLazyInitializer"})
@@ -39,9 +41,5 @@ public class Apply {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
     Course course;
-
-    public Apply(ApplyDTO applyDTO){
-
-    }
 }
 

@@ -1,5 +1,6 @@
 package com.example.MeetingStoneServer.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.example.MeetingStoneServer.config.JwtConfig;
 import com.example.MeetingStoneServer.dto.ApplyDTO;
 import com.example.MeetingStoneServer.entity.Apply;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -35,18 +38,55 @@ public class ApplyController {
         if(applyDTO.getType()==1|| applyDTO.getType()==3){
             applyDTO.getTags().add(applyDTO.getCourse().getName());
         }
+
         Apply apply = Apply.builder().build();
         BeanUtils.copyProperties(applyDTO,apply);
         apply.setApplicant(userService.getById(jwtConfig.getUserId(applyDTO.getApplicant())));
-        apply.setTags(applyDTO.getTags().toString());
+        apply.setTags(JSONArray.toJSONString(applyDTO.getTags()));
         if (apply.getCourse().getId()==0){
             apply.setCourse(null);
         }
         if (apply.getGroup().getId()==0){
             apply.setGroup(null);
         }
-        applyService.Update(apply);
+        applyService.update(apply);
         return ResultFactory.buildSuccessResult(null);
+    }
+
+
+    @CrossOrigin
+    @GetMapping("/myApply")
+    public Result myApply(@RequestHeader("token")String token){
+        System.out.println("get apply");
+        List<Apply> applies = applyService.getByUserId(jwtConfig.getUserId(token));
+        return ResultFactory.buildSuccessResult(apply2DTO(applies));
+    }
+
+    @CrossOrigin
+    @GetMapping("withdrawApply")
+    public Result withdrawApply(@RequestParam("applyId")int id){
+        applyService.remove(id);
+        return ResultFactory.buildSuccessResult("删除成功");
+    }
+
+
+
+
+
+
+
+
+
+
+    private List<ApplyDTO> apply2DTO(List<Apply> applies){
+        List<ApplyDTO> dtos = new ArrayList<>();
+        for(Apply apply:applies){
+            ApplyDTO applyDTO = new ApplyDTO();
+            BeanUtils.copyProperties(apply,applyDTO);
+            applyDTO.setTags(JSONArray.parseArray(apply.getTags()).toJavaList(String.class));
+            dtos.add(applyDTO);
+        }
+        return dtos;
     }
 
 }

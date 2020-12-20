@@ -9,6 +9,8 @@ import Groups from "@/components/Groups";
 import Courses from "@/components/Courses";
 import Personal from "@/components/Personal";
 import PostApply from "../components/PostApply";
+import MyApply from "../components/MyApply";
+import MyReply from "../components/MyReply";
 
 
 
@@ -60,6 +62,22 @@ export default new VueRouter({
                             path: "/Personal",
                             name: "Personal",
                             component: Personal,
+                            meta: {
+                                requireAuth: true
+                            }
+                        },
+                        {
+                            path: "/MyApply",
+                            name: "MyApply",
+                            component: MyApply,
+                            meta: {
+                                requireAuth: true
+                            }
+                        },
+                        {
+                            path: "/MyReply",
+                            name: "MyReply",
+                            component: MyReply,
                             meta: {
                                 requireAuth: true
                             }

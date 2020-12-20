@@ -14,6 +14,7 @@ import java.util.List;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApplyDTO {
+    int id;
     String title;
     List<String> tags;
     String intro;
@@ -21,7 +22,7 @@ public class ApplyDTO {
     Date ddlDate;
     int type;
     int state;
-    @JsonSerialize(using = CourseSerializer.class)
+    //@JsonSerialize(using = CourseSerializer.class)
     Course course;
     Group group;
     String applicant;

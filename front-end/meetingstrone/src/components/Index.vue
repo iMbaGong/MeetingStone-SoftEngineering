@@ -1,12 +1,13 @@
 <template>
-  <el-container>
-    <el-aside style="width: 200px;margin-top: 20px">
-      <switch></switch>
-      <SideMenu @indexSelect="listByCategory" ref="sideMenu"></SideMenu>
-    </el-aside>
-    <el-main>
-      <router-view/>
-    </el-main>
+
+  <el-container style="margin: 0 auto auto;max-width: 1100px">
+      <el-aside style="width: 200px;margin-top:20px;">
+        <switch></switch>
+        <SideMenu @indexSelect="listByCategory" ref="sideMenu"></SideMenu>
+      </el-aside>
+      <el-main style="margin-top: 20px">
+        <router-view/>
+      </el-main>
   </el-container>
 </template>
 
@@ -38,10 +39,6 @@ export default {
 </script>
 
 <style scoped>
-.books-area {
-  width: 990px;
-  margin-left: auto;
-  margin-right: auto;
-}
+
 </style>
 
