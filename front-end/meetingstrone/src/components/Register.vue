@@ -34,7 +34,7 @@ export default{
       var _this = this
       this.$axios
           .post('/register', {
-            username: this.loginForm.usernum,
+            usernum: this.loginForm.usernum,
             password: this.loginForm.password
           })
           .then(resp => {

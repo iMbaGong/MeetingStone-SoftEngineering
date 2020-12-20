@@ -27,7 +27,7 @@ export default {
     return{
       navList:[
         {name:"Index",navItem:"用户中心"},
-        {name:"",navItem:"发布请求"},
+        {name:"PostApply",navItem:"发布请求"},
         {name:"Reply",navItem:"响应请求"},
       ]
     }

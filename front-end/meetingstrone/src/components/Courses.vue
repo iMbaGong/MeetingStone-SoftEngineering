@@ -6,7 +6,7 @@
           <h1 class="name">{{item.name}}</h1>
         </div>
         <div class="teacher">
-          老师：{{item.teacher}}
+          老师：{{item.teacher.username}}
         </div>
       </el-card>
     </el-col>
@@ -18,13 +18,22 @@ export default {
   name: "Courses",
   data(){
     return{
-      courses:[
-        {
-          name:"Software Engineering",
-          teacher:"杜庆峰"
-        }
-      ]
+      courses:[]
     }
+  },
+  mounted() {
+    this.loadCourses()
+  },
+  methods:{
+    loadCourses(){
+      var _this = this;
+      _this.$axios.get('/joinedCourses').then(resp => {
+        console.log(resp.data.result);
+        if (resp && resp.status === 200) {
+          _this.courses = resp.data.result
+        }
+      });
+    },
   }
 }
 </script>

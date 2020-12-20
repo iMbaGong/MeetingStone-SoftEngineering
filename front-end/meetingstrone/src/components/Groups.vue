@@ -33,7 +33,6 @@
 </template>
 
 <script>
-import store from "@/store";
 export default {
   name: "Groups",
   components: {},
@@ -50,20 +49,20 @@ export default {
   },
   methods:{
     loadGroups(){
-      var _this = this
-      this.$axios.get('/joined?userId='+store.state.user.id).then(resp => {
-        console.log(resp.data)
+      var _this = this;
+      _this.$axios.get('/joinedGroups').then(resp => {
+        console.log(resp.data);
         if (resp && resp.status === 200) {
           _this.groups = resp.data.result
         }
       })
     },
     handleCurrentChange: function (currentPage) {
-      this.currentPage = currentPage
+      this.currentPage = currentPage;
       console.log(this.currentPage)
     },
     searchResult () {
-      var _this = this
+      var _this = this;
       this.$axios
           .get('/searchGroup?keywords=' + this.$refs.searchBar.keywords, {
           }).then(resp => {

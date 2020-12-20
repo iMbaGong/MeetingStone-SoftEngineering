@@ -26,11 +26,18 @@ router.beforeEach((to, from, next) => {
     console.log("route["+"to:"+to.name+"  from:"+from.name+"]")
       if (to.meta.requireAuth) {
         if (store.state.token) {
+            console.log("token found!")
             axios.get('/authentication').then(resp => {
                 console.log(resp)
-                if (resp.status===200){
+                if (resp.data.code === 200){
                     console.log("auth!")
                     next()
+                }else {
+                    console.log("expired!")
+                    next({
+                        path: 'login',
+                        query: {redirect: to.fullPath}
+                    })
                 }
             })
         } else {
