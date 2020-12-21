@@ -86,14 +86,6 @@ public class ApplyController {
         return ResultFactory.buildSuccessResult(null);
     }
 
-
-
-
-
-
-
-
-
     private List<ApplyDTO> apply2DTO(List<Apply> applies){
         List<ApplyDTO> dtos = new ArrayList<>();
         for(Apply apply:applies){

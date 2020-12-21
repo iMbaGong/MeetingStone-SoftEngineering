@@ -14,4 +14,6 @@ public interface ApplyDAO extends JpaRepository<Apply,Integer> {
                                                           String title,
                                                           String tags,
                                                           Pageable pageable);
+    List<Apply> findAllByCourseIsInAndTitleLike(Collection<Course> courses,
+                                                String title);
 }

@@ -30,6 +30,11 @@ public class ApplyService {
                               Pageable pageable){
         return applyDAO.findAllByCourseIsInAndTitleLikeOrTagsLike(courses,title,tags,pageable);
     }
+    public List<Apply> search(Collection<Course> courses,
+                              String title){
+        return applyDAO.findAllByCourseIsInAndTitleLike(courses,title);
+    }
+
 
     public List<Apply> getByUserId(int id){
         return applyDAO.findAllByApplicant_Id(id);
