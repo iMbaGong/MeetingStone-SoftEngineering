@@ -1,35 +1,36 @@
-<template xmlns:el-col="http://www.w3.org/1999/html" xmlns:el-row="http://www.w3.org/1999/html">
-<div>
-  <el-row>
-    <el-radio-group v-model="display" size="mini" style="float: right;margin: 15px">
-      <el-radio-button label="卡片" icon="el-icon-search"></el-radio-button>
-      <el-radio-button label="列表"></el-radio-button>
-    </el-radio-group>
-  </el-row>
-  <el-row :gutter="20">
-    <el-col :span="12" style="margin-bottom: 20px" v-for="item in groups" :key="item.id">
-      <el-card :body-style="{ padding: '0px' }" class="group" shadow="hover">
-          <div style="height: 100px;background-color:#409EFF">
-            <h1 class="name">{{item.name}}</h1>
-          </div>
-          <div class="leader">
-            组长：{{item.leader.username}}
-          </div>
-          <div class="info">
-            简介：{{item.info}}
-          </div>
-      </el-card>
-    </el-col>
-  </el-row>
-  <el-row>
-    <el-pagination
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-size="pagesize"
-        :total="groups.length">
-    </el-pagination>
-  </el-row>
-</div>
+<template>
+    <div style="height: 100%;display: flex;flex-direction: column">
+      <el-row>
+        <el-radio-group v-model="display" size="mini" style="float: right;">
+          <el-radio-button label="卡片" icon="el-icon-search"></el-radio-button>
+          <el-radio-button label="列表"></el-radio-button>
+        </el-radio-group>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="12" style="margin-bottom: 20px" v-for="item in groups" :key="item.id">
+          <el-card :body-style="{ padding: '0px' }" class="group" shadow="hover">
+              <div style="height: 100px;background-color:#409EFF">
+                <h1 class="name">{{item.name}}</h1>
+              </div>
+              <div class="leader">
+                组长：{{item.leader.username}}
+              </div>
+              <div class="info">
+                简介：{{item.info}}
+              </div>
+          </el-card>
+        </el-col>
+      </el-row>
+        <div style="flex-grow: 1;"></div>
+            <el-pagination
+                    @current-change="handleCurrentChange"
+                    :current-page="currentPage"
+                    :page-size="pagesize"
+                    :total="groups.length"
+                    >
+            </el-pagination>
+
+    </div>
 </template>
 
 <script>

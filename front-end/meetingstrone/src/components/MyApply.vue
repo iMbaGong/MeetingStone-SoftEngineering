@@ -176,10 +176,10 @@
 
 <style scoped>
     .demo-table-expand .el-form-item {
-        margin-left: 30px;
+        margin-left: 80px;
         margin-right: 0;
         margin-bottom: 0;
-        width: 50%;
+        width: 65%;
     }
     h3{
         margin: 2px 0 2px 0;

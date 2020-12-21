@@ -2,7 +2,8 @@
   <el-menu
       default-active="Groups"
       router
-      active-text-color="blue">
+      active-text-color="blue"
+      >
     <el-menu-item index="Groups">
       <template slot="title">
         <i class="iconfont el-icon-Personalmanagement-" style="margin: 0 3px 2px 0;font-size:20px"></i>
@@ -15,17 +16,17 @@
         <span>我的课程</span>
       </template>
     </el-menu-item>
-    <el-submenu index="">
+    <el-submenu index=""  style="overflow-x: hidden">
       <template slot="title">
         <i class="el-icon-document" style="margin: 0 0 2px 0;font-size:19px"></i>
         <span>我的请求</span>
       </template>
-      <el-menu-item index="MyApply">
+      <el-menu-item class="submenu" index="MyApply" >
         <div style="margin-left: 20px">
           发布的请求
         </div>
       </el-menu-item>
-      <el-menu-item index="MyReply">
+      <el-menu-item class="submenu" index="MyReply" >
         <div style="margin-left: 20px">
           响应的请求
         </div>
@@ -54,8 +55,5 @@ export default {
 </script>
 
 <style scoped>
-.categories {
-  position: fixed;
-  top: 100px;
-}
+
 </style>

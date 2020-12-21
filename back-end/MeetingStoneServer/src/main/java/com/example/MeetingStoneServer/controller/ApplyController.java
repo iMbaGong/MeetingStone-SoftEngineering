@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.example.MeetingStoneServer.config.JwtConfig;
 import com.example.MeetingStoneServer.dto.ApplyDTO;
 import com.example.MeetingStoneServer.entity.Apply;
+import com.example.MeetingStoneServer.entity.User;
 import com.example.MeetingStoneServer.result.Result;
 import com.example.MeetingStoneServer.result.ResultFactory;
 import com.example.MeetingStoneServer.service.ApplyService;
@@ -12,9 +13,13 @@ import com.example.MeetingStoneServer.service.GroupService;
 import com.example.MeetingStoneServer.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,6 +74,17 @@ public class ApplyController {
         return ResultFactory.buildSuccessResult("删除成功");
     }
 
+    @CrossOrigin
+    @GetMapping("searchApply")
+    public Result searchApply(
+            @RequestHeader("token")String token,
+                                @RequestParam("pageSize")int pageSize,
+                                @RequestParam("pageNum")int pageNum,
+                                @RequestParam("keyword")String keyword){
+        User user = userService.getById(jwtConfig.getUserId(token));
+        Pageable pageable = PageRequest.of(pageNum,pageSize, Sort.by(Sort.Direction.ASC,"crtDate"));
+        return ResultFactory.buildSuccessResult(applyService.search(user.getCourses(),keyword,keyword,pageable));
+    }
 
 
 

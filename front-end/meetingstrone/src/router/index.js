@@ -4,13 +4,13 @@ import Login from "@/components/Login";
 import Index from "@/components/Index";
 import Home from "@/components/Home";
 import Register from "@/components/Register";
-import Reply from "@/components/Reply";
 import Groups from "@/components/Groups";
 import Courses from "@/components/Courses";
 import Personal from "@/components/Personal";
 import PostApply from "../components/PostApply";
 import MyApply from "../components/MyApply";
 import MyReply from "../components/MyReply";
+import ApplyCenter from "../components/ApplyCenter";
 
 
 
@@ -93,9 +93,9 @@ export default new VueRouter({
                     }
                 },
                 {
-                    path: '/Reply',
-                    name: 'Reply',
-                    component: Reply,
+                    path: '/ApplyCenter',
+                    name: 'ApplyCenter',
+                    component: ApplyCenter,
                     meta: {
                         requireAuth: true
                     }

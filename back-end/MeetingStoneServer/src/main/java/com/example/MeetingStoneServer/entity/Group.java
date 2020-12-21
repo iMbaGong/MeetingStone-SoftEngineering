@@ -25,10 +25,10 @@ public class Group {
     private User leader;
     String info;
     int type;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
     Course course;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "group2user", joinColumns = { @JoinColumn(name = "group_id") }, inverseJoinColumns = {
             @JoinColumn(name = "user_id") }, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT), inverseForeignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private List<User> members;
