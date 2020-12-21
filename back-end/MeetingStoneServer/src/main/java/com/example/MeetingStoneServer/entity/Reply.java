@@ -2,10 +2,13 @@ package com.example.MeetingStoneServer.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "reply")
 @JsonIgnoreProperties({"handle","hibernateLazyInitializer"})

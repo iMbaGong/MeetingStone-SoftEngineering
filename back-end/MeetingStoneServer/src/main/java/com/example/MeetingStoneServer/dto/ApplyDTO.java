@@ -6,12 +6,15 @@ import com.example.MeetingStoneServer.entity.Group;
 import com.example.MeetingStoneServer.jsonserializer.CourseSerializer;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import lombok.Data;
+
+import lombok.Getter;
+import lombok.Setter;
 
 
 import java.util.Date;
 import java.util.List;
-@Data
+@Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApplyDTO {
     int id;

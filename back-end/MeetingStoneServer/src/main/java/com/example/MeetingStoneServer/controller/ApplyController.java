@@ -83,7 +83,7 @@ public class ApplyController {
                                 @RequestParam("keyword")String keyword){
         User user = userService.getById(jwtConfig.getUserId(token));
         Pageable pageable = PageRequest.of(pageNum,pageSize, Sort.by(Sort.Direction.ASC,"crtDate"));
-        return ResultFactory.buildSuccessResult(applyService.search(user.getCourses(),keyword,keyword,pageable));
+        return ResultFactory.buildSuccessResult(null);
     }
 
 
