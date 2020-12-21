@@ -32,7 +32,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/api/login")
                 .excludePathPatterns("/api/logout")
                 .excludePathPatterns("/api/hello")
-                .excludePathPatterns("/api/register");
+        ;
     }
 
     @Override

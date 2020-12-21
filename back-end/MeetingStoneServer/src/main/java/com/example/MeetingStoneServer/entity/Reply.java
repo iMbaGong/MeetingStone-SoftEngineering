@@ -17,11 +17,14 @@ public class Reply {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     int type;
-    String intro;
+    String remark;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "responder_id")
     User responder;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "apply_id")
     Apply apply;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id")
+    Group group;
 }

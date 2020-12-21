@@ -39,14 +39,14 @@ public class ApplyController {
 
     @CrossOrigin
     @PostMapping("/apply")
-    public Result updateApply(@RequestBody ApplyDTO applyDTO){
+    public Result updateApply(@RequestHeader("token")String token, @RequestBody ApplyDTO applyDTO){
         if(applyDTO.getType()==1|| applyDTO.getType()==3){
             applyDTO.getTags().add(applyDTO.getCourse().getName());
         }
 
         Apply apply = Apply.builder().build();
         BeanUtils.copyProperties(applyDTO,apply);
-        apply.setApplicant(userService.getById(jwtConfig.getUserId(applyDTO.getApplicant())));
+        apply.setApplicant(userService.getById(jwtConfig.getUserId(token)));
         apply.setTags(JSONArray.toJSONString(applyDTO.getTags()));
         if (apply.getCourse().getId()==0){
             apply.setCourse(null);
@@ -82,11 +82,20 @@ public class ApplyController {
                                 @RequestParam("pageNum")int pageNum,
                                 @RequestParam("keyword")String keyword){
         User user = userService.getById(jwtConfig.getUserId(token));
+        keyword = keyword.equals("#")?"%":keyword;
         Pageable pageable = PageRequest.of(pageNum,pageSize, Sort.by(Sort.Direction.ASC,"crtDate"));
-        return ResultFactory.buildSuccessResult(null);
+        return ResultFactory.buildSuccessResult(apply2DTO(applyService.search(user.getCourses(),keyword)));
     }
 
-    private List<ApplyDTO> apply2DTO(List<Apply> applies){
+    @CrossOrigin
+    @GetMapping("allApply")
+    public Result allApply(@RequestHeader("token")String token){
+        User user = userService.getById(jwtConfig.getUserId(token));
+        return ResultFactory.buildSuccessResult(apply2DTO(applyService.search(user.getCourses(),user)));
+    }
+
+
+    static public List<ApplyDTO> apply2DTO(List<Apply> applies){
         List<ApplyDTO> dtos = new ArrayList<>();
         for(Apply apply:applies){
             ApplyDTO applyDTO = new ApplyDTO();
@@ -96,5 +105,15 @@ public class ApplyController {
         }
         return dtos;
     }
+
+
+    static public ApplyDTO apply2DTO(Apply apply){
+        ApplyDTO applyDTO = new ApplyDTO();
+        BeanUtils.copyProperties(apply,applyDTO);
+        applyDTO.setTags(JSONArray.parseArray(apply.getTags()).toJavaList(String.class));
+        return applyDTO;
+    }
+
+
 
 }

@@ -2,6 +2,7 @@ package com.example.MeetingStoneServer.dao;
 
 import com.example.MeetingStoneServer.entity.Apply;
 import com.example.MeetingStoneServer.entity.Course;
+import com.example.MeetingStoneServer.entity.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -16,4 +17,9 @@ public interface ApplyDAO extends JpaRepository<Apply,Integer> {
                                                           Pageable pageable);
     List<Apply> findAllByCourseIsInAndTitleLike(Collection<Course> courses,
                                                 String title);
+    List<Apply> findAllByTitleLike(String kw);
+
+    List<Apply> findAllByCourseIsInAndApplicantIsNotOrTypeIsIn(Collection<Course> courses,
+                                                               User user,
+                                                               Collection<Integer> type);
 }

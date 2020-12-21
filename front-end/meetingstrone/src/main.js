@@ -5,6 +5,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import store from "./store"
 import './assets/icons/iconfont.css'
+import moment from 'moment'
 
 var axios = require('axios')
 axios.defaults.baseURL = 'http://localhost:8443/api'
@@ -19,6 +20,7 @@ axios.interceptors.request.use(config=>{
     return config;
 })
 Vue.prototype.$axios = axios
+Vue.prototype.$moment = moment
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
-@Controller
+@RestController
 public class UserController {
     @Autowired
     UserService userService;
@@ -18,8 +18,14 @@ public class UserController {
     JwtConfig jwtConfig;
     @CrossOrigin
     @GetMapping("api/joinedGroups")
-    @ResponseBody
     public Result getJoinedGroups(@RequestHeader("token")String token){
         return ResultFactory.buildSuccessResult(userService.getJoinedGroups(jwtConfig.getUserId(token)));
+    }
+
+    @CrossOrigin
+    @GetMapping("api/myGroupByCourse")
+    public Result myGroupByCourse(@RequestHeader("token")String token,
+                                  @RequestParam("courseId")int id){
+        return ResultFactory.buildSuccessResult(userService.getJoinedByCourse(jwtConfig.getUserId(token),id));
     }
 }

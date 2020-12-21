@@ -1,7 +1,7 @@
 <template>
 
   <el-container style="margin: 0 auto auto;max-width: 1100px">
-      <el-aside  style="width: 200px;margin-top:20px;padding: 5px">
+      <el-aside  style="width: 200px;margin-top:20px;padding: 5px;">
         <switch></switch>
         <SideMenu @indexSelect="listByCategory" ref="sideMenu" class="shadow"></SideMenu>
       </el-aside>

@@ -3,6 +3,7 @@ package com.example.MeetingStoneServer.dto;
 import com.alibaba.fastjson.JSONArray;
 import com.example.MeetingStoneServer.entity.Course;
 import com.example.MeetingStoneServer.entity.Group;
+import com.example.MeetingStoneServer.entity.User;
 import com.example.MeetingStoneServer.jsonserializer.CourseSerializer;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -17,6 +18,7 @@ import java.util.List;
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApplyDTO {
+    User applicant;
     int id;
     String title;
     List<String> tags;
@@ -28,5 +30,4 @@ public class ApplyDTO {
     //@JsonSerialize(using = CourseSerializer.class)
     Course course;
     Group group;
-    String applicant;
 }

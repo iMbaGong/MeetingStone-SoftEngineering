@@ -171,7 +171,6 @@
                     ddlDate:_this.form.ddlTime,
                     type:type,
                     state:0,
-                    applicant:_this.$store.state.token,
                     group:_this.form.group,
                     course:_this.form.course,
                     tags:_this.form.tags,

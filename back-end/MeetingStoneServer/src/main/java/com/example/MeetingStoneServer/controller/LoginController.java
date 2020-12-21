@@ -47,10 +47,11 @@ public class LoginController {
     @CrossOrigin
     @PostMapping(value = "api/register")
     @ResponseBody
-    public Result register(@RequestBody User user) {
-        String usernum = user.getUsernum();
-        String password = user.getPassword();
+    public Result register(@RequestBody UserDTO userDTO) {
+        String usernum = userDTO.getUsernum();
+        String password = userDTO.getPassword();
         usernum = HtmlUtils.htmlEscape(usernum);
+        User user = new User();
         user.setUsernum(usernum);
 
         boolean exist = userService.isExist(usernum);
@@ -67,7 +68,6 @@ public class LoginController {
         user.setSalt(salt);
         user.setPassword(encodedPassword);
         userService.add(user);
-
         return ResultFactory.buildSuccessResult(user);
     }
 

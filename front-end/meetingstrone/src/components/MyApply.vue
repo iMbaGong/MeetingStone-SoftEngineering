@@ -28,7 +28,7 @@
                     </template>
                     <span class="content">{{apply.group.name}}</span>
                 </el-form-item>
-                <el-form-item v-if=isGroup(apply.type)>
+                <el-form-item v-if=isCourse(apply.type)>
                     <template slot="label">
                         <h3>关联课程</h3>
                     </template>
