@@ -50,7 +50,7 @@ export default{
               })
             }
           })
-          .catch(failResponse => {})
+          .catch()
     }
   }
 }

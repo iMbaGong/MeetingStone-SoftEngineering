@@ -82,17 +82,10 @@ public class ApplyController {
                                 @RequestParam("pageNum")int pageNum,
                                 @RequestParam("keyword")String keyword){
         User user = userService.getById(jwtConfig.getUserId(token));
-        Pageable pageable = PageRequest.of(pageNum,pageSize, Sort.by(Sort.Direction.ASC,"crtDate"));
-        return ResultFactory.buildSuccessResult(applyService.search(user.getCourses(),keyword,keyword,pageable));
+        //System.out.println(user.getCourses());
+        //Pageable pageable = PageRequest.of(pageNum,pageSize, Sort.by(Sort.Direction.ASC,"crtDate"));
+        return ResultFactory.buildSuccessResult(null);
     }
-
-
-
-
-
-
-
-
 
     private List<ApplyDTO> apply2DTO(List<Apply> applies){
         List<ApplyDTO> dtos = new ArrayList<>();
