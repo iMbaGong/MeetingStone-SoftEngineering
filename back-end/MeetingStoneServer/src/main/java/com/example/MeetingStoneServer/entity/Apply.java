@@ -39,5 +39,7 @@ public class Apply {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
     Course course;
+    @Column(name = "unhandled_num")
+    int unhandled;
 }
 

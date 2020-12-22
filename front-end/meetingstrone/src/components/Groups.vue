@@ -13,7 +13,7 @@
                 <h1 class="name">{{item.name}}</h1>
               </div>
               <div class="leader">
-                组长：{{item.leader.username}}
+                 组长：{{item.leader.username}}
               </div>
               <div class="info">
                 简介：{{item.info}}

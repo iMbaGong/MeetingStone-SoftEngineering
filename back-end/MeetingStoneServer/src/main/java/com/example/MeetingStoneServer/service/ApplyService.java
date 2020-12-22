@@ -44,7 +44,7 @@ public class ApplyService {
         List<Integer> list = new ArrayList<Integer>();
         list.add(2);
         list.add(4);
-        return applyDAO.findAllByCourseIsInAndApplicantIsNotOrTypeIsIn(courses,user,list);
+        return applyDAO.findAllByCourseIsInAndApplicantIsNotOrTypeIsInAndApplicantIsNot(courses,user,list,user);
     }
 
     public List<Apply> getByUserId(int id){

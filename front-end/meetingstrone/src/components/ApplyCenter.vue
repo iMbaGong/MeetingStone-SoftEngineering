@@ -254,9 +254,11 @@
                         let _this = this;
                         _this.$axios.post("reply",{
                             type:Math.ceil(_this.applySelected.type/2),
+                            state:0,
                             remark:_this.form.remark,
                             apply:_this.applyTable[_this.applySelected.index],
-                            group:_this.form.groupSelected
+                            group:_this.form.groupSelected,
+                            crtDate: new Date()
                         }).then(resp=>{
                             if(resp.data.code===200){
                                 _this.$message({
@@ -267,7 +269,7 @@
                             else {
                                 _this.$message({
                                     type: 'error',
-                                    message: '提交失败!'
+                                    message: resp.data.message
                                 });
                             }
                         }).catch(function (resp) {

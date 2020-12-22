@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -17,6 +18,7 @@ public class Reply {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     int type;
+    int state;
     String remark;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "responder_id")
@@ -27,4 +29,6 @@ public class Reply {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
     Group group;
+    @Column(name = "crt_date")
+    Date crtDate;
 }

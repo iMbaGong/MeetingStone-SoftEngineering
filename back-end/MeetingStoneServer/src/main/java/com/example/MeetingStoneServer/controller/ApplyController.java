@@ -19,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.persistence.Column;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,20 +41,22 @@ public class ApplyController {
     @CrossOrigin
     @PostMapping("/apply")
     public Result updateApply(@RequestHeader("token")String token, @RequestBody ApplyDTO applyDTO){
-        if(applyDTO.getType()==1|| applyDTO.getType()==3){
-            applyDTO.getTags().add(applyDTO.getCourse().getName());
-        }
-
-        Apply apply = Apply.builder().build();
-        BeanUtils.copyProperties(applyDTO,apply);
+//        if(applyDTO.getType()==1|| applyDTO.getType()==3){
+//            applyDTO.getTags().add(applyDTO.getCourse().getName());
+//        }
+//
+//        Apply apply = Apply.builder().build();
+//        BeanUtils.copyProperties(applyDTO,apply);
+//        apply.setApplicant(userService.getById(jwtConfig.getUserId(token)));
+//        apply.setTags(JSONArray.toJSONString(applyDTO.getTags()));
+//        if (apply.getCourse().getId()==0){
+//            apply.setCourse(null);
+//        }
+//        if (apply.getGroup().getId()==0){
+//            apply.setGroup(null);
+//        }
+        Apply apply = applyDTO.toEntity();
         apply.setApplicant(userService.getById(jwtConfig.getUserId(token)));
-        apply.setTags(JSONArray.toJSONString(applyDTO.getTags()));
-        if (apply.getCourse().getId()==0){
-            apply.setCourse(null);
-        }
-        if (apply.getGroup().getId()==0){
-            apply.setGroup(null);
-        }
         applyService.update(apply);
         return ResultFactory.buildSuccessResult(null);
     }
@@ -64,7 +67,7 @@ public class ApplyController {
     public Result myApply(@RequestHeader("token")String token){
         System.out.println("get apply");
         List<Apply> applies = applyService.getByUserId(jwtConfig.getUserId(token));
-        return ResultFactory.buildSuccessResult(apply2DTO(applies));
+        return ResultFactory.buildSuccessResult(ApplyDTO.toDTO(applies));
     }
 
     @CrossOrigin
@@ -84,36 +87,15 @@ public class ApplyController {
         User user = userService.getById(jwtConfig.getUserId(token));
         keyword = keyword.equals("#")?"%":keyword;
         Pageable pageable = PageRequest.of(pageNum,pageSize, Sort.by(Sort.Direction.ASC,"crtDate"));
-        return ResultFactory.buildSuccessResult(apply2DTO(applyService.search(user.getCourses(),keyword)));
+        return ResultFactory.buildSuccessResult(ApplyDTO.toDTO(applyService.search(user.getCourses(),keyword)));
     }
 
     @CrossOrigin
     @GetMapping("allApply")
     public Result allApply(@RequestHeader("token")String token){
         User user = userService.getById(jwtConfig.getUserId(token));
-        return ResultFactory.buildSuccessResult(apply2DTO(applyService.search(user.getCourses(),user)));
+        return ResultFactory.buildSuccessResult(ApplyDTO.toDTO(applyService.search(user.getCourses(),user)));
     }
-
-
-    static public List<ApplyDTO> apply2DTO(List<Apply> applies){
-        List<ApplyDTO> dtos = new ArrayList<>();
-        for(Apply apply:applies){
-            ApplyDTO applyDTO = new ApplyDTO();
-            BeanUtils.copyProperties(apply,applyDTO);
-            applyDTO.setTags(JSONArray.parseArray(apply.getTags()).toJavaList(String.class));
-            dtos.add(applyDTO);
-        }
-        return dtos;
-    }
-
-
-    static public ApplyDTO apply2DTO(Apply apply){
-        ApplyDTO applyDTO = new ApplyDTO();
-        BeanUtils.copyProperties(apply,applyDTO);
-        applyDTO.setTags(JSONArray.parseArray(apply.getTags()).toJavaList(String.class));
-        return applyDTO;
-    }
-
 
 
 }
