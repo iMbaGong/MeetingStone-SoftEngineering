@@ -1,15 +1,15 @@
 <template>
-    <el-form class="form" label-width="80px">
-        <el-form-item label="请求标题">
+    <el-form :model="form" class="form" label-width="80px"  ref="postForm" :rules="rules">
+        <el-form-item label="请求标题" prop="title">
             <el-input type="text" placeholder="请输入请求标题" v-model="form.title" maxlength="10" show-word-limit></el-input>
         </el-form-item>
-        <el-form-item label="请求类型">
+        <el-form-item label="请求类型" prop="type">
             <el-select v-model="form.type" @change="selectType" placeholder="招募队友or寻求组队" style="width: 100%">
                 <el-option label="招募队友" value="1"></el-option>
                 <el-option label="寻求组队" value="2"></el-option>
             </el-select>
         </el-form-item>
-        <el-form-item  v-if =typeBtn label="绑定小组">
+        <el-form-item  v-show =typeBtn label="绑定小组" prop="group">
             <el-select
                     class="opt"
                     v-model="form.group"
@@ -28,13 +28,13 @@
             </el-select>
         </el-form-item>
 
-        <el-form-item label="请求范围">
+        <el-form-item label="请求范围" prop="range">
             <el-select v-model="form.range" @change="selectRange" placeholder="课内请求or课外请求" style="width: 100%">
                 <el-option label="课内请求" value="3"></el-option>
                 <el-option label="课外请求" value="4"></el-option>
             </el-select>
         </el-form-item>
-        <el-form-item  v-if =rangeBtn label="绑定课程">
+        <el-form-item  v-show =rangeBtn label="绑定课程" prop="course">
             <el-select
                     class="opt"
                     v-model="form.course"
@@ -52,7 +52,7 @@
                 </el-option>
             </el-select>
         </el-form-item>
-        <el-form-item  v-if =tagInput label="选择标签">
+        <el-form-item  v-show =tagInput label="选择标签">
             <div style="float: left">
                 <el-tag
                         :key="tag"
@@ -76,15 +76,14 @@
             </div>
 
         </el-form-item>
-        <el-form-item label="请求简介">
+        <el-form-item label="请求简介" prop="intro">
             <el-input type="textarea" v-model="form.intro" maxlength="64" show-word-limit></el-input>
         </el-form-item>
-        <el-form-item label="有效期限">
+        <el-form-item label="有效期限" prop="ddlDate">
             <el-date-picker
-                    v-model="form.ddlTime"
+                    v-model="form.ddlDate"
                     type="datetime"
                     placeholder="选择日期时间"
-                    align="right"
                     :picker-options="pickerOptions"
                     style="width: 100%">
             </el-date-picker>
@@ -106,7 +105,7 @@
                 course:{},
                 tags:[],
                 intro:'',
-                ddlTime: '',
+                ddlDate: '',
             },
             searchGroups: [],
             searchCourses:[],
@@ -143,54 +142,70 @@
                     }
                 }]
             },
+            rules:{
+                title:[{required: true, message: '请输入标题', trigger: 'blur'}],
+                group:[{required: true, message: '请选择绑定的小组', trigger: 'change'}],
+                type:[{required: true, message: '请选择请求类型', trigger: 'change'}],
+                range:[{required: true, message: '请选择项目范围', trigger: 'change'}],
+                course:[{required: true, message: '请选择绑定的课程', trigger: 'change'}],
+                ddlDate:[{type: 'date',required: true, message: '请选择截止日期', trigger: 'change'}],
+            }
+
         }
     },
     methods: {
         onSubmit() {
-            console.log('submit![日期：'+this.form.ddlTime+'],['+this.form.group+']');
-            var _this = this;
-            let type;
-            if(_this.form.type==="1"){
-                if(_this.form.range==="3"){
-                    type=1
-                }else {
-                    type=2
-                }
-            }else {
-                if(_this.form.range==="3"){
-                    type=3
-                }else {
-                    type=4
-                }
-            }
-
-            this.$axios
-                .post('/apply', {
-                    title:_this.form.title,
-                    crtDate:new Date(),
-                    ddlDate:_this.form.ddlTime,
-                    type:type,
-                    state:0,
-                    group:_this.form.group,
-                    course:_this.form.course,
-                    tags:_this.form.tags,
-                    intro:_this.form.intro
-                })
-                .then(resp => {
-                    if (resp.data.code === 200) {
-                        this.$alert('发布成功', '提示', {
-                            confirmButtonText: '确定'
-                        })
-                    } else {
-                        console.log(resp.data.message);
-                        this.$alert(resp.data.message, '提示', {
-                            confirmButtonText: '确定'
-                        })
+            this.$refs['postForm'].validate((valid) => {
+                if (valid) {
+                    console.log('submit![日期：'+this.form.ddlTime+'],['+this.form.group+']');
+                    var _this = this;
+                    let type;
+                    if(_this.form.type==="1"){
+                        if(_this.form.range==="3"){
+                            type=1
+                        }else {
+                            type=2
+                        }
+                    }else {
+                        if(_this.form.range==="3"){
+                            type=3
+                        }else {
+                            type=4
+                        }
                     }
-                })
-                // eslint-disable-next-line no-unused-vars
-                .catch(failResponse => {
-                })
+                    this.$axios
+                        .post('/apply', {
+                            title:_this.form.title,
+                            crtDate:new Date(),
+                            ddlDate:_this.form.ddlDate,
+                            type:type,
+                            state:0,
+                            group:_this.form.group,
+                            course:_this.form.course,
+                            tags:_this.form.tags,
+                            intro:_this.form.intro
+                        })
+                        .then(resp => {
+                            if (resp.data.code === 200) {
+                                this.$alert('发布成功', '提示', {
+                                    confirmButtonText: '确定'
+                                })
+                            } else {
+                                console.log(resp.data.message);
+                                this.$alert(resp.data.message, '提示', {
+                                    confirmButtonText: '确定'
+                                })
+                            }
+                        })
+                        // eslint-disable-next-line no-unused-vars
+                        .catch(failResponse => {
+                        })
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+
         },
         selectType(value){
             if(value==="1"){

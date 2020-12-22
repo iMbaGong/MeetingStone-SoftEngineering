@@ -3,7 +3,7 @@
         <el-table
             :data="applyTable.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
                 stripe
-                max-height=""
+                max-height="1000px"
                 :default-sort="{prop: 'ddlDate', order: 'descending'}"
                 @sort-change="mySort"
                 >
@@ -125,7 +125,7 @@
                 <h3 style="width: max-content;">完善信息</h3>
             </template>
             <el-form :model="form" :rules="rules" ref="replyForm">
-                <el-form-item label="选择小组" :label-width="formLabelWidth" v-if="formType(applySelected.type)" prop="group">
+                <el-form-item label="选择小组" :label-width="formLabelWidth" v-show="formType(applySelected.type)" prop="groupSelected">
                     <el-select v-model="form.groupSelected" placeholder="选择已加入的小组" style="width: 100%">
                         <el-option
                                 v-for="item in form.myGroups"
@@ -169,7 +169,7 @@
                     remark:''
                 },
                 rules:{
-                    group:[ { required: true, message: '请选择小组(若无该课程的小组则无法邀请)', trigger: 'blur' },]
+                    groupSelected:[ { required: true, message: '请选择小组(若无该课程的小组则无法邀请)', trigger: 'blur' },]
                 }
             }
         },
