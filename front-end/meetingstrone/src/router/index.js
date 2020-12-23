@@ -4,13 +4,13 @@ import Login from "@/components/Login";
 import Index from "@/components/Index";
 import Home from "@/components/Home";
 import Register from "@/components/Register";
-import Groups from "@/components/Groups";
 import Courses from "@/components/Courses";
 import Personal from "@/components/Personal";
 import PostApply from "../components/PostApply";
 import MyApply from "../components/MyApply";
 import MyReply from "../components/MyReply";
 import ApplyCenter from "../components/ApplyCenter";
+import GroupIndex from "@/components/GroupIndex";
 
 
 
@@ -43,9 +43,9 @@ export default new VueRouter({
                     },
                     children:[
                         {
-                            path: "/Groups",
-                            name: "Group",
-                            component: Groups,
+                            path: "/GroupIndex",
+                            name: "GroupIndex",
+                            component: GroupIndex,
                             meta: {
                                 requireAuth: true
                             }

@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "projectgroup")
-@JsonIgnoreProperties({"handle","hibernateLazyInitializer","members"})
+@JsonIgnoreProperties({"handle","hibernateLazyInitializer"})
 public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
