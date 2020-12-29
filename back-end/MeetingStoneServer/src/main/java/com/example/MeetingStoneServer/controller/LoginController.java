@@ -1,6 +1,7 @@
 package com.example.MeetingStoneServer.controller;
 
 import com.example.MeetingStoneServer.config.JwtConfig;
+import com.example.MeetingStoneServer.dto.LoginInfoDTO;
 import com.example.MeetingStoneServer.dto.UserDTO;
 import com.example.MeetingStoneServer.result.Result;
 import com.example.MeetingStoneServer.entity.User;
@@ -41,7 +42,12 @@ public class LoginController {
         }
         System.out.println(user.getUsernum()+" hello");
         String token = jwtConfig.createToken(user.getId()+"");
-        return ResultFactory.buildSuccessResult(token);
+        LoginInfoDTO loginInfoDTO = new LoginInfoDTO();
+        loginInfoDTO.setId(user.getId());
+        loginInfoDTO.setToken(token);
+        loginInfoDTO.setUsername(user.getUsername());
+        loginInfoDTO.setUsernum(user.getUsernum());
+        return ResultFactory.buildSuccessResult(loginInfoDTO);
     }
 
     @CrossOrigin

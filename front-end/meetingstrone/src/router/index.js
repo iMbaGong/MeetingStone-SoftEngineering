@@ -13,7 +13,11 @@ import ApplyCenter from "../components/ApplyCenter";
 import GroupIndex from "@/components/GroupIndex";
 
 
-
+const originalPush = VueRouter.prototype.push
+//修改原型对象中的push方法
+VueRouter.prototype.push = function push(location) {
+    return originalPush.call(this, location).catch(err => {console.log(err)})
+}
 
 Vue.use(VueRouter)
 
@@ -26,18 +30,19 @@ export default new VueRouter({
             path:"/",
             name:"Default",
             component:Index,
-            redirect: '/Index',
+            redirect: '/GroupIndex',
         },
         {
             path: "/Home",
             name: "Home",
             component: Home,
-            redirect: '/Index',
+            redirect: '/GroupIndex',
             children:[
                 {
                     path: "/Index",
                     name: "Index",
                     component: Index,
+                    redirect: '/GroupIndex',
                     meta: {
                         requireAuth: true
                     },

@@ -1,6 +1,6 @@
 <template>
     <el-menu
-        default-active="Groups"
+        default-active="GroupIndex"
         router
         active-text-color="blue">
         <el-menu-item index="GroupIndex">

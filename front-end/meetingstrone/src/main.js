@@ -8,7 +8,7 @@ import './assets/icons/iconfont.css'
 import moment from 'moment'
 
 var axios = require('axios')
-axios.defaults.baseURL = 'http://localhost:8443/api'
+axios.defaults.baseURL = 'http://47.94.34.136:8443/api'//http://localhost:8443/api
 //axios.defaults.withCredentials = true
 // 全局注册，之后可在其他组件中通过 this.$axios 发送数据
 
@@ -24,6 +24,10 @@ Vue.prototype.$moment = moment
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)
+
+
+
+
 router.beforeEach((to, from, next) => {
     console.log("route["+"to:"+to.name+"  from:"+from.name+"]")
       if (to.meta.requireAuth) {

@@ -41,20 +41,6 @@ public class ApplyController {
     @CrossOrigin
     @PostMapping("/apply")
     public Result updateApply(@RequestHeader("token")String token, @RequestBody ApplyDTO applyDTO){
-//        if(applyDTO.getType()==1|| applyDTO.getType()==3){
-//            applyDTO.getTags().add(applyDTO.getCourse().getName());
-//        }
-//
-//        Apply apply = Apply.builder().build();
-//        BeanUtils.copyProperties(applyDTO,apply);
-//        apply.setApplicant(userService.getById(jwtConfig.getUserId(token)));
-//        apply.setTags(JSONArray.toJSONString(applyDTO.getTags()));
-//        if (apply.getCourse().getId()==0){
-//            apply.setCourse(null);
-//        }
-//        if (apply.getGroup().getId()==0){
-//            apply.setGroup(null);
-//        }
         Apply apply = applyDTO.toEntity();
         apply.setApplicant(userService.getById(jwtConfig.getUserId(token)));
         applyService.update(apply);

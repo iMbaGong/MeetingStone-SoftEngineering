@@ -54,6 +54,10 @@ export default {
                 }
             });
         },
+        handleCurrentChange: function (currentPage) {
+            this.currentPage = currentPage;
+            console.log(this.currentPage)
+        },
     }
 }
 </script>

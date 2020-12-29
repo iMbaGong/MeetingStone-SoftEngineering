@@ -5,20 +5,21 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        // user: {
-        //     id: window.localStorage.getItem('user'|| '[]') == null ? '' : JSON.parse(window.localStorage.getItem('user' || '[]')).id
-        // },
+        localId:window.localStorage.getItem('localId'),
         token:window.localStorage.getItem('token')
     },
     mutations: {
-        login (state, token) {
-            state.token = token
-            window.localStorage.setItem('token',token)
+        login (state, loginInfo) {
+            state.token = loginInfo.token
+            window.localStorage.setItem('token',loginInfo.token)
+            window.localStorage.setItem('localId',loginInfo.id)
         },
         logout(state){
             console.log("logout")
             state.token = ""
+            state.localId=undefined
             window.localStorage.removeItem('token')
+            window.localStorage.removeItem('localId')
         }
     }
 })

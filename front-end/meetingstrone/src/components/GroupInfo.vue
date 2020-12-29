@@ -43,6 +43,13 @@
                 </template>
                 <span class="content">{{ tranDate(group.crtDate) }}</span>
             </el-form-item>
+            <el-form-item>
+
+            </el-form-item>
+            <el-form-item >
+                <el-button v-if="$store.state.localId===group.leader.id">管理小组</el-button>
+                <el-button @click="quitGroup" type="danger">退出小组</el-button>
+            </el-form-item>
         </el-form>
     </div>
 </template>
@@ -84,11 +91,17 @@ export default {
                 }
                 return allMembers;
             }
-        }
+        },
+        isLeader: function () {
+            return this.$store.state.localId===this.group.leader.id
+        },
     },
     mounted() {
     },
     methods: {
+        quitGroup(){
+
+        }
     }
 
 }

@@ -34,9 +34,6 @@ export default {
         }
     },
     computed: {
-        currentTabComponent: function () {
-            return "Groups";
-        }
     },
     methods: {
         removeTab(targetName) {

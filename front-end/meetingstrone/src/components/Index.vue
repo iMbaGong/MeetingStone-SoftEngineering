@@ -20,7 +20,6 @@ export default {
         SideMenu
     },
     mounted() {
-        //this.$router.replace("GroupIndex")
     },
     methods: {
         listByCategory() {
