@@ -24,7 +24,9 @@ public class GroupService {
     public void addOrUpdate(Group group){
         groupDAO.save(group);
     }
-
+    public void removeById(int id){
+        groupDAO.deleteById(id);
+    }
 
     public List<User> getMembers(int groupId){
         return groupDAO.findById(groupId).map(Group::getMembers).orElse(null);

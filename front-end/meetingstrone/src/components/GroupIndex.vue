@@ -57,6 +57,12 @@ export default {
         },
         getGroupInfo(group) {
             let _this = this;
+            for (let i = 0; i < _this.editableTabs.length; i++) {
+                if (_this.editableTabs[i].name===group.id+''){
+                    _this.editableTabsValue = group.id + '';
+                    return;
+                }
+            }
             _this.editableTabs.push({
                 title: group.name,
                 name: group.id + '',

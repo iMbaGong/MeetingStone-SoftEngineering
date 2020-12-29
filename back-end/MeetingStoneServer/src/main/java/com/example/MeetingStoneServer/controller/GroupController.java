@@ -5,10 +5,12 @@ import com.example.MeetingStoneServer.entity.User;
 import com.example.MeetingStoneServer.result.Result;
 import com.example.MeetingStoneServer.result.ResultFactory;
 import com.example.MeetingStoneServer.service.GroupService;
+import com.example.MeetingStoneServer.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Iterator;
 import java.util.List;
 
 @RestController
@@ -17,18 +19,49 @@ public class GroupController {
 
     @Autowired
     GroupService groupService;
-
+    @Autowired
+    UserService userService;
 
     @CrossOrigin
     @GetMapping("initGroup")
-    public Result init(){
+    public Result init() {
         return ResultFactory.buildSuccessResult(groupService.list());
     }
 
     @CrossOrigin
     @GetMapping("group")
-    public Result group(@RequestParam("groupId")int groupId){
+    public Result group(@RequestParam("groupId") int groupId) {
         return ResultFactory.buildSuccessResult(groupService.getById(groupId));
+    }
+
+    @CrossOrigin
+    @GetMapping("changeLeader")
+    public Result changeLeader(@RequestParam("groupId") int groupId, @RequestParam("userId") int userId) {
+        Group group = groupService.getById(groupId);
+        group.setLeader(userService.getById(userId));
+        groupService.addOrUpdate(group);
+        return ResultFactory.buildSuccessResult(null);
+    }
+
+    @CrossOrigin
+    @GetMapping("removeMember")
+    public Result removeMember(@RequestParam("groupId") int groupId, @RequestParam("userId") int userId) {
+        Group group = groupService.getById(groupId);
+        if(group.getLeader().getId()==userId){
+            groupService.removeById(groupId);
+            return ResultFactory.buildSuccessResult(null);
+        }
+        List<User> members = group.getMembers();
+        Iterator<User>iterator = members.iterator();
+        while(iterator.hasNext()){
+            if(iterator.next().getId()==userId) {
+                iterator.remove();
+                break;
+            }
+        }
+        group.setMembers(members);
+        groupService.addOrUpdate(group);
+        return ResultFactory.buildSuccessResult(null);
     }
 
 }
