@@ -14,6 +14,9 @@
     <el-menu-item style="float: right" @click="logout" index="/Login">
       退出登录
     </el-menu-item>
+    <span style="float: right;margin: 20px 5px 10px">
+      您好，{{$store.state.user.usernum}} {{$store.state.user.username}}
+    </span>
     <el-badge :value="12" style="float:right;margin:17px 15px 0 0;">
       <el-button icon="el-icon-bell" circle></el-button>
     </el-badge>

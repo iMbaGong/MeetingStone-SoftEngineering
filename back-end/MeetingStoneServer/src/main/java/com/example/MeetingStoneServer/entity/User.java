@@ -31,6 +31,10 @@ public class User {
     private List<Group> groups;
     @ManyToMany(mappedBy = "students",fetch = FetchType.LAZY)
     private List<Course> courses;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user2role", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
+            @JoinColumn(name = "role_id") }, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT), inverseForeignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private List<Role> roles;
 
 }
 

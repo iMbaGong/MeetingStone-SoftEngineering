@@ -47,18 +47,18 @@
 
             </el-form-item>
             <el-form-item style="margin-top: 30px">
-                <el-button v-show=isLeader($store.state.localId) @click="manageGroup">管理小组</el-button>
+                <el-button v-show=isLeader($store.state.user.id) @click="manageGroup">管理小组</el-button>
                 <el-popconfirm
                         confirm-button-text='确定'
                         cancel-button-text='取消'
                         @confirm="quitGroup"
                         icon="el-icon-info"
                         icon-color="red"
-                        :title="quitType(isLeader($store.state.localId))"
+                        :title="quitType(isLeader($store.state.user.id))"
                         style="margin-left: 20px"
                 >
                     <el-button type="danger" slot="reference">
-                        {{quitType(isLeader($store.state.localId))}}
+                        {{quitType(isLeader($store.state.user.id))}}
                     </el-button>
                 </el-popconfirm>
 
@@ -165,7 +165,7 @@
         methods: {
             quitGroup() {
                 let _this = this;
-                _this.$axios.get("/removeMember?userId=" + _this.$store.state.localId + "&&groupId=" + _this.group.id).then(
+                _this.$axios.get("/removeMember?userId=" + _this.$store.state.user.id + "&&groupId=" + _this.group.id).then(
                     resp => {
                         if (resp.data.code === 200) {
                             _this.$message({
