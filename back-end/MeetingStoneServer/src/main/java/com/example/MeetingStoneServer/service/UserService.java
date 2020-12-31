@@ -16,22 +16,22 @@ import java.util.List;
 public class UserService {
     @Autowired
     UserDAO userDAO;
-    @Autowired
-    GroupDAO groupDAO;
+
 
     public boolean isExist(String username) {
         User user = userDAO.findByUsernum(username);
-        return null!=user;
+        return null != user;
     }
-    public User getById(int id){
+
+    public User getById(int id) {
         return userDAO.findById(id).orElse(null);
     }
 
-    public User getByUsernum(String usernum){
+    public User getByUsernum(String usernum) {
         return userDAO.findByUsernum(usernum);
     }
 
-    public User get(String user_num, String password){
+    public User get(String user_num, String password) {
         return userDAO.findByUsernumAndPassword(user_num, password);
     }
 
@@ -39,33 +39,30 @@ public class UserService {
         userDAO.save(user);
     }
 
-    public List<Group> getJoinedGroups(int id){
+    public List<Group> getJoinedGroups(int id) {
         User user = userDAO.findById(id).orElse(null);
         assert user != null;
-        System.out.println("User:"+user.getUsernum()+" try to get groups");
+        System.out.println("User:" + user.getUsernum() + " try to get groups");
         return user.getGroups();
     }
-    public List<Course> getJoinedCourses(int id){
-        User user = userDAO.findById(id).orElse(null);
-        assert user != null;
-        System.out.println("User:"+user.getUsernum()+" try to get courses");
-        return user.getCourses();
-    }
 
-    public List<Group> getJoinedByCourse(int id,int courseId){
+    public List<Group> getJoinedByCourse(int id, int courseId) {
         User user = userDAO.findById(id).orElse(null);
         assert user != null;
         List<Group> groups = user.getGroups();
         Iterator<Group> iterator = groups.iterator();
-        while (iterator.hasNext()){
-            Group group  = iterator.next();
+        while (iterator.hasNext()) {
+            Group group = iterator.next();
             if (group.getCourse() == null) {
                 iterator.remove();
-            }
-            else if(group.getCourse().getId()!=courseId){
+            } else if (group.getCourse().getId() != courseId) {
                 iterator.remove();
             }
         }
         return groups;
+    }
+
+    public List<User> search(String kw) {
+        return userDAO.findAllByUsernameLikeOrUsernumLike('%' + kw + '%', '%' + kw + '%');
     }
 }

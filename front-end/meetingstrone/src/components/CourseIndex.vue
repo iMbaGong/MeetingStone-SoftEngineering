@@ -1,8 +1,8 @@
 <template>
     <div>
-        <el-tabs v-model="editableTabsValue" type="card" @tab-remove="removeTab" >
-            <el-tab-pane name="index" label="我的小组" >
-                <Groups @getGroupInfo="getGroupInfo"/>
+        <el-tabs v-model="editableTabsValue" type="card" @tab-remove="removeTab">
+            <el-tab-pane name="index" label="我的课程">
+                <Courses @getCourseInfo="getCourseInfo"/>
             </el-tab-pane>
             <el-tab-pane
                 :key="item.name"
@@ -11,21 +11,21 @@
                 :name="item.name"
                 closable
             >
-                <GroupInfo :group="item.group"></GroupInfo>
+                <CourseInfo :course="item.course"></CourseInfo>
             </el-tab-pane>
         </el-tabs>
     </div>
 </template>
 
 <script>
-import Groups from "@/components/Groups";
-import GroupInfo from "@/components/GroupInfo";
+import Courses from "@/components/Courses";
+import CourseInfo from "@/components/CourseInfo";
 
 export default {
-    name: "GroupIndex",
-    components: {
-        Groups,
-        GroupInfo
+    name: "CourseIndex",
+    components:{
+        Courses,
+        CourseInfo
     },
     data() {
         return {
@@ -55,20 +55,20 @@ export default {
             console.log(activeName)
             this.editableTabs = tabs.filter(tab => tab.name !== targetName);
         },
-        getGroupInfo(group) {
+        getCourseInfo(course) {
             let _this = this;
             for (let i = 0; i < _this.editableTabs.length; i++) {
-                if (_this.editableTabs[i].name===group.id+''){
-                    _this.editableTabsValue = group.id + '';
+                if (_this.editableTabs[i].name===course.id+''){
+                    _this.editableTabsValue = course.id + '';
                     return;
                 }
             }
             _this.editableTabs.push({
-                title: group.name,
-                name: group.id + '',
-                group: group
+                title: course.name,
+                name: course.id + '',
+                course: course
             });
-            _this.editableTabsValue = group.id + '';
+            _this.editableTabsValue = course.id + '';
         }
     }
 }

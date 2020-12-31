@@ -20,6 +20,9 @@ public class GroupService {
     public Group getById(int id){
         return groupDAO.findById(id).orElse(null);
     }
+    public List<Group> getByCourse(int id){
+        return groupDAO.findAllByCourse_Id(id);
+    }
 
     public void addOrUpdate(Group group){
         groupDAO.save(group);

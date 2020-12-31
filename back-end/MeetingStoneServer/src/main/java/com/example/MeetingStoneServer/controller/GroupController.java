@@ -4,6 +4,7 @@ import com.example.MeetingStoneServer.entity.Group;
 import com.example.MeetingStoneServer.entity.User;
 import com.example.MeetingStoneServer.result.Result;
 import com.example.MeetingStoneServer.result.ResultFactory;
+import com.example.MeetingStoneServer.service.CourseService;
 import com.example.MeetingStoneServer.service.GroupService;
 import com.example.MeetingStoneServer.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ public class GroupController {
     GroupService groupService;
     @Autowired
     UserService userService;
+
 
     @CrossOrigin
     @GetMapping("initGroup")
@@ -64,4 +66,9 @@ public class GroupController {
         return ResultFactory.buildSuccessResult(null);
     }
 
+    @CrossOrigin
+    @GetMapping("/courseGroups")
+    Result getMembers(@RequestParam("courseId")int id){
+        return ResultFactory.buildSuccessResult(groupService.getByCourse(id));
+    }
 }

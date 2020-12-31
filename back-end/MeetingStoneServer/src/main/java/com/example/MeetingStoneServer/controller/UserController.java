@@ -28,4 +28,10 @@ public class UserController {
                                   @RequestParam("courseId")int id){
         return ResultFactory.buildSuccessResult(userService.getJoinedByCourse(jwtConfig.getUserId(token),id));
     }
+
+    @CrossOrigin
+    @GetMapping("api/searchUser")
+    public Result searchUser(@RequestParam("keyword")String kw){
+        return ResultFactory.buildSuccessResult(userService.search(kw));
+    }
 }

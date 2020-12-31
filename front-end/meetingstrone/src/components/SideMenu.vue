@@ -9,7 +9,7 @@
                 <span>我的小组</span>
             </template>
         </el-menu-item>
-        <el-menu-item index="Courses">
+        <el-menu-item index="CourseIndex">
             <template slot="title">
                 <i class="iconfont el-icon-course" style="margin: 0 3px 2px 0"></i>
                 <span>我的课程</span>

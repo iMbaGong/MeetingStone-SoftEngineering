@@ -4,13 +4,13 @@ import Login from "@/components/Login";
 import Index from "@/components/Index";
 import Home from "@/components/Home";
 import Register from "@/components/Register";
-import Courses from "@/components/Courses";
 import Personal from "@/components/Personal";
 import PostApply from "../components/PostApply";
 import MyApply from "../components/MyApply";
 import MyReply from "../components/MyReply";
 import ApplyCenter from "../components/ApplyCenter";
 import GroupIndex from "@/components/GroupIndex";
+import CourseIndex from "@/components/CourseIndex";
 
 
 const originalPush = VueRouter.prototype.push
@@ -56,9 +56,9 @@ export default new VueRouter({
                             }
                         },
                         {
-                            path: "/Courses",
-                            name: "Courses",
-                            component: Courses,
+                            path: "/CourseIndex",
+                            name: "CourseIndex",
+                            component: CourseIndex,
                             meta: {
                                 requireAuth: true
                             }

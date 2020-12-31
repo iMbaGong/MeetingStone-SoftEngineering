@@ -1,14 +1,14 @@
 <template>
     <div style="height: 100%;display: flex;flex-direction: column">
         <el-row>
-            <el-radio-group v-model="display" size="mini" style="float: right;">
+            <el-radio-group v-model="display" size="mini" style="float: right;margin: 15px">
                 <el-radio-button label="卡片" icon="el-icon-search"></el-radio-button>
                 <el-radio-button label="列表"></el-radio-button>
             </el-radio-group>
         </el-row>
         <el-row :gutter="20">
             <el-col :span="8" style="margin-bottom: 20px" v-for="item in courses" :key="item.id">
-                <el-card :body-style="{ padding: '0px' }" class="courses" shadow="hover">
+                <el-card :body-style="{ padding: '0px' }" class="courses" shadow="hover" @click.native="getCourseInfo(item)">
                     <div style="height: 150px;background-color:#72767b">
                         <h1 class="name">{{ item.name }}</h1>
                     </div>
@@ -58,6 +58,10 @@ export default {
             this.currentPage = currentPage;
             console.log(this.currentPage)
         },
+        getCourseInfo(course){
+            console.log("click Course");
+            this.$emit("getCourseInfo",course);
+        }
     }
 }
 </script>

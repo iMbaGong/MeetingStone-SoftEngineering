@@ -19,7 +19,7 @@ public interface ApplyDAO extends JpaRepository<Apply,Integer> {
                                                 String title);
     List<Apply> findAllByTitleLike(String kw);
 
-    List<Apply> findAllByCourseIsInAndApplicantIsNotOrTypeIsInAndApplicantIsNot(Collection<Course> courses,
-                                                               User user1,
-                                                               Collection<Integer> type,User user2);
+    List<Apply> findAllByCourseIsInAndApplicantIsNotAndStateOrTypeIsInAndApplicantIsNotAndState(Collection<Course> courses,
+                                                               User user1,int state1,
+                                                               Collection<Integer> type,User user2,int state2);
 }
