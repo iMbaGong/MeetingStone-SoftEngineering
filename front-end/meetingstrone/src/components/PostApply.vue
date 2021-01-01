@@ -14,13 +14,10 @@
                 class="opt"
                 v-model="form.group"
                 filterable
-                remote
-                reserve-keyword
                 placeholder="请输入关键词"
-                :remote-method="findGroups"
-                :loading="loading">
+                value-key="name">
                 <el-option
-                    v-for="item in searchGroups"
+                    v-for="item in myGroups"
                     :key=item.id
                     :label="item.name"
                     :value=item>
@@ -39,13 +36,10 @@
                 class="opt"
                 v-model="form.course"
                 filterable
-                remote
-                reserve-keyword
                 placeholder="请输入关键词"
-                :remote-method="findCourses"
-                :loading="loading">
+                value-key="name">
                 <el-option
-                    v-for="item in searchCourses"
+                    v-for="item in myCourses"
                     :key=item.id
                     :label="item.name"
                     :value=item>
@@ -107,10 +101,8 @@ export default {
                 intro: '',
                 ddlDate: '',
             },
-            searchGroups: [],
-            searchCourses: [],
-            searchList: [],
-            loading: false,
+            myGroups: [],
+            myCourses: [],
             states: [],
 
             typeBtn: false,
@@ -209,19 +201,30 @@ export default {
         },
         selectType(value) {
             if (value === "1") {
-                console.log("select 1:" + this.form.type);
-                this.typeBtn = true
+                let _this = this;
+                this.typeBtn = true;
+                _this.$axios.get('/joinedGroups').then(resp => {
+                    console.log(resp.data.result);
+                    if (resp && resp.status === 200) {
+                        _this.myGroups = resp.data.result
+                    }
+                });
             } else {
-                console.log("select 2:" + this.form.type);
                 this.typeBtn = false
             }
 
         },
         selectRange(value) {
             if (value === "3") {
-                console.log("select 3:" + this.form.range);
+                let _this = this;
                 this.rangeBtn = true;
-                this.tagInput = false
+                this.tagInput = false;
+                _this.$axios.get('/joinedCourses').then(resp => {
+                    console.log(resp.data.result);
+                    if (resp && resp.status === 200) {
+                        _this.myCourses = resp.data.result
+                    }
+                });
             } else {
                 console.log("select 4:" + this.form.range);
                 this.rangeBtn = false;
@@ -251,55 +254,8 @@ export default {
             this.inputVisible = false;
             this.inputValue = '';
         },
-        findGroups(query) {
-            if (query !== '') {
-                this.loading = true;
-                this.searchList = [];
-                var _this = this;
-                _this.$axios.get('/joinedGroups').then(resp => {
-                    console.log(resp.data.result);
-                    if (resp && resp.status === 200) {
-                        _this.searchList = resp.data.result
-                    }
-                });
-                setTimeout(() => {
-                    console.log("timeout:" + _this.searchList);
-                    this.searchGroups = this.searchList.filter(item => {
-                        return item.name
-                            .indexOf(query) > -1;
-                        //return item.id===query
 
-                    });
-                    this.loading = false;
-                }, 2000);
-            } else {
-                this.searchGroups = [];
-            }
-        },
-        findCourses(query) {
-            if (query !== '') {
-                this.loading = true;
-                this.searchList = [];
-                var _this = this;
-                _this.$axios.get('/joinedCourses').then(resp => {
-                    console.log(resp.data.result);
-                    if (resp && resp.status === 200) {
-                        _this.searchList = resp.data.result
-                    }
-                });
-                setTimeout(() => {
-                    console.log("timeout:" + _this.searchList);
-                    this.searchCourses = this.searchList.filter(item => {
-                        return item.name
-                            .indexOf(query) > -1;
-                        //return item.id===query
-                    });
-                    this.loading = false;
-                }, 2000);
-            } else {
-                this.searchGroups = [];
-            }
-        }
+
     }
 }
 </script>

@@ -2,7 +2,7 @@
     <div>
         <el-tabs v-model="editableTabsValue" type="card" @tab-remove="removeTab">
             <el-tab-pane name="index" label="我的课程">
-                <Courses @getCourseInfo="getCourseInfo"/>
+                <Courses @getCourseInfo="getCourseInfo" />
             </el-tab-pane>
             <el-tab-pane
                 :key="item.name"
@@ -11,7 +11,16 @@
                 :name="item.name"
                 closable
             >
-                <CourseInfo :course="item.course"></CourseInfo>
+                <CourseInfo :course="item.course" @getGroupInfo="getGroupInfo"></CourseInfo>
+            </el-tab-pane>
+            <el-tab-pane
+                    :key="item.name"
+                    v-for="item in editableTabs2"
+                    :label="item.title"
+                    :name="item.name"
+                    closable
+            >
+                <EditCourseGroup :group="item.group"></EditCourseGroup>
             </el-tab-pane>
         </el-tabs>
     </div>
@@ -20,10 +29,12 @@
 <script>
 import Courses from "@/components/Courses";
 import CourseInfo from "@/components/CourseInfo";
+import EditCourseGroup from "./EditCourseGroup";
 
 export default {
     name: "CourseIndex",
     components:{
+        EditCourseGroup,
         Courses,
         CourseInfo
     },
@@ -31,6 +42,7 @@ export default {
         return {
             editableTabsValue: 'index',
             editableTabs: [],
+            editableTabs2: [],
         }
     },
     computed: {
@@ -69,6 +81,21 @@ export default {
                 course: course
             });
             _this.editableTabsValue = course.id + '';
+        },
+        getGroupInfo(group) {
+            let _this = this;
+            for (let i = 0; i < _this.editableTabs2.length; i++) {
+                if (_this.editableTabs2[i].name===group.name){
+                    _this.editableTabsValue = group.name;
+                    return;
+                }
+            }
+            _this.editableTabs2.push({
+                title: group.name,
+                name: group.name,
+                group: group
+            });
+            _this.editableTabsValue = group.name;
         }
     }
 }

@@ -39,8 +39,6 @@ export default {
                 })
                 .then(resp => {
                     if (resp.data.code === 200) {
-                        // var data = this.loginForm
-                        console.log(resp.data.result)
                         _this.$store.commit('login', resp.data.result)
                         var path = this.$route.query.redirect
                         console.log("path:" + path)

@@ -46,7 +46,7 @@ public class GroupController {
     }
 
     @CrossOrigin
-    @GetMapping("removeMember")
+    @GetMapping("removeGroupMember")
     public Result removeMember(@RequestParam("groupId") int groupId, @RequestParam("userId") int userId) {
         Group group = groupService.getById(groupId);
         if(group.getLeader().getId()==userId){
@@ -67,8 +67,32 @@ public class GroupController {
     }
 
     @CrossOrigin
+    @GetMapping("addGroupMember")
+    public Result addGroupMember(@RequestParam("groupId") int groupId, @RequestParam("userId") int userId) {
+        Group group = groupService.getById(groupId);
+        List<User> members = group.getMembers();
+        Iterator<User>iterator = members.iterator();
+        while(iterator.hasNext()){
+            if(iterator.next().getId()==userId) {
+                return ResultFactory.buildFailResult("用户已在小组中");
+            }
+        }
+        members.add(userService.getById(userId));
+        group.setMembers(members);
+        groupService.addOrUpdate(group);
+        return ResultFactory.buildSuccessResult(null);
+    }
+
+    @CrossOrigin
     @GetMapping("/courseGroups")
     Result getMembers(@RequestParam("courseId")int id){
         return ResultFactory.buildSuccessResult(groupService.getByCourse(id));
+    }
+
+    @CrossOrigin
+    @PostMapping("/createGroup")
+    Result createGroup(@RequestBody Group group){
+        groupService.addOrUpdate(group);
+        return ResultFactory.buildSuccessResult(null);
     }
 }

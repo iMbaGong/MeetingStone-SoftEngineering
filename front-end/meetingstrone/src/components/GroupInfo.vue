@@ -93,10 +93,32 @@
                                     slot="reference"> 移除
                             </el-button>
                         </el-popconfirm>
-
                     </template>
                 </el-table-column>
             </el-table>
+            <div style="margin-top: 15px">
+                <el-select
+                        style="width: 100%"
+                        filterable
+                        remote
+                        reserve-keyword
+                        placeholder="请输入学号或姓名"
+                        :remote-method="findUser"
+                        :loading="loading"
+                        class="input-new-tag"
+                        v-if="inputVisible"
+                        v-model="inputValue"
+                        ref="saveTagInput"
+                        @change="handleInputConfirm">
+                    <el-option
+                            v-for="item in searchList"
+                            :key=item.id
+                            :label="item.username"
+                            :value=item>
+                    </el-option>
+                </el-select>
+                <el-button v-else class="button-new-tag" @click="showInput">+ 添加小组成员</el-button>
+            </div>
         </el-dialog>
 
     </div>
@@ -108,7 +130,12 @@
         props: ['group'],
         data() {
             return {
-                dialogTableVisible: false
+                dialogTableVisible: false,
+                searchList: [],
+                myCourse:[],
+                loading: false,
+                inputVisible: false,
+                inputValue: {},
             }
         },
         computed: {
@@ -196,7 +223,7 @@
             },
             removeMember(userId, index) {
                 let _this = this;
-                _this.$axios.get("/removeMember?userId=" + userId + "&&groupId=" + _this.group.id).then(
+                _this.$axios.get("/removeGroupMember?userId=" + userId + "&&groupId=" + _this.group.id).then(
                     resp => {
                         if (resp.data.code === 200) {
                             _this.$message({
@@ -205,10 +232,62 @@
                             });
                             _this.group.members.splice(index, 1)
                         }
+                        else {
+                            _this.$message({
+                                type: 'error',
+                                message: resp.data.message
+                            });
+                        }
                     }
                 ).catch()
             },
-
+            showInput() {
+                if (this.group.members.length === 20) {
+                    this.$message.error('最多20个成员');
+                } else {
+                    this.inputVisible = true;
+                }
+            },
+            handleInputConfirm() {
+                let inputValue = this.inputValue;
+                if (inputValue) {
+                    let _this = this;
+                    _this.$axios.get("/addGroupMember?userId=" + inputValue.id + "&&groupId=" + _this.group.id).then(
+                        resp => {
+                            if (resp.data.code === 200) {
+                                _this.$message({
+                                    type: 'success',
+                                    message: '添加成功!'
+                                });
+                                this.group.members.push(inputValue);
+                            }
+                            else {
+                                _this.$message({
+                                    type: 'error',
+                                    message: resp.data.message
+                                });
+                            }
+                        }
+                    ).catch();
+                }
+                this.inputVisible = false;
+                this.inputValue = '';
+            },
+            findUser(query) {
+                if (query !== '') {
+                    this.loading = true;
+                    this.searchList = [];
+                    var _this = this;
+                    _this.$axios.get('/searchUser?keyword=' + query).then(resp => {
+                        if (resp && resp.status === 200) {
+                            _this.searchList = resp.data.result
+                        }
+                    });
+                    setTimeout(() => {
+                        this.loading = false;
+                    }, 1000);
+                }
+            },
         }
 
     }
