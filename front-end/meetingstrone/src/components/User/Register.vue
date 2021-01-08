@@ -58,7 +58,7 @@ export default {
 </script>
 <style>
 #paper {
-    background: url("../assets/background.jpg") no-repeat center;
+    background: url("../../assets/background.jpg") no-repeat center;
     height: 100%;
     width: 100%;
     background-size: cover;

@@ -18,8 +18,8 @@
 </template>
 
 <script>
-import Groups from "@/components/Groups";
-import GroupInfo from "@/components/GroupInfo";
+import Groups from "@/components/User/Groups";
+import GroupInfo from "@/components/User/GroupInfo";
 
 export default {
     name: "GroupIndex",

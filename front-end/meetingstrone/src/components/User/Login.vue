@@ -74,7 +74,7 @@ export default {
 }
 
 #poster {
-    background: url("../assets/background.jpg") no-repeat;
+    background: url("../../assets/background.jpg") no-repeat;
     height: 105%;
     width: 105%;
     background-size: cover;

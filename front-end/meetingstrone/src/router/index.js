@@ -1,17 +1,19 @@
 import VueRouter from "vue-router";
 import Vue from "vue";
-import Login from "@/components/Login";
-import Index from "@/components/Index";
-import Home from "@/components/Home";
-import Register from "@/components/Register";
-import Personal from "@/components/Personal";
-import PostApply from "../components/PostApply";
-import MyApply from "../components/MyApply";
-import MyReply from "../components/MyReply";
-import ApplyCenter from "../components/ApplyCenter";
-import GroupIndex from "@/components/GroupIndex";
-import CourseIndex from "@/components/CourseIndex";
 
+import PostApply from "../components/User/PostApply";
+import MyApply from "../components/User/MyApply";
+import MyReply from "../components/User/MyReply";
+import ApplyCenter from "../components/User/ApplyCenter";
+import AdminIndex from "../components/Admin/AdminIndex";
+import Home from "../components/User/Home";
+import Index from "../components/User/Index"
+import GroupIndex from "../components/User/GroupIndex";
+import CourseIndex from "../components/User/CourseIndex";
+import Personal from "../components/User/Personal";
+import Login from "../components/User/Login";
+import Register from "../components/User/Register";
+import UserManage from "../components/Admin/UserManage";
 
 const originalPush = VueRouter.prototype.push
 //修改原型对象中的push方法
@@ -116,6 +118,18 @@ export default new VueRouter({
             path: "/Register",
             name: "Register",
             component: Register
+        },
+        {
+            path: "/AdminIndex",
+            name: "AdminIndex",
+            component: AdminIndex,
+            children:[
+                {
+                    path: "/UserManage",
+                    name: "UserManage",
+                    component: UserManage
+                }
+            ]
         }
 
     ]

@@ -27,8 +27,8 @@
 </template>
 
 <script>
-import Courses from "@/components/Courses";
-import CourseInfo from "@/components/CourseInfo";
+import Courses from "@/components/User/Courses";
+import CourseInfo from "@/components/User/CourseInfo";
 import EditCourseGroup from "./EditCourseGroup";
 
 export default {

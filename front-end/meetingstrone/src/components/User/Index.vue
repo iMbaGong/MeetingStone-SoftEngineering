@@ -2,7 +2,7 @@
     <el-container style="margin: 0 auto auto;max-width: 1100px">
         <el-aside style="width: 200px;margin-top:20px;padding: 5px;">
             <switch></switch>
-            <SideMenu @indexSelect="listByCategory" ref="sideMenu" class="shadow"></SideMenu>
+            <SideMenu class="shadow"></SideMenu>
         </el-aside>
         <el-main class="shadow main">
             <router-view/>
@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import SideMenu from "@/components/SideMenu";
+import SideMenu from "@/components/User/SideMenu";
 
 
 export default {
@@ -22,16 +22,7 @@ export default {
     mounted() {
     },
     methods: {
-        listByCategory() {
-            var _this = this
-            var cid = this.$refs.sideMenu.cid
-            var url = 'categories/' + cid + '/books'
-            this.$axios.get(url).then(resp => {
-                if (resp && resp.status === 200) {
-                    _this.$refs.booksArea.books = resp.data
-                }
-            })
-        }
+
     }
 }
 </script>
