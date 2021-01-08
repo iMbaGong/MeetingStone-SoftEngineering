@@ -5,6 +5,7 @@
             @open="handleOpen"
             @close="handleClose"
             :collapse="isCollapse"
+            style="height: 100%"
     >
         <el-menu-item index="UserManage">
             <i class="el-icon-menu"></i>
@@ -27,7 +28,20 @@
 
 <script>
     export default {
-        name: "SideBar"
+        name: "SideBar",
+        data(){
+            return{
+                isCollapse:true,
+            }
+        },
+        methods:{
+            handleOpen(){
+
+            },
+            handleClose(){
+
+            },
+        }
     }
 </script>
 

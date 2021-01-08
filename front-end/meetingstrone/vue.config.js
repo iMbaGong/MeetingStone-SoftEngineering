@@ -1,5 +1,3 @@
-
-
 module.exports = {
     publicPath: '/', // base目录，等同于router.js的base字段
     outputDir: 'dist',
