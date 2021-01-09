@@ -9,6 +9,9 @@ import com.example.MeetingStoneServer.result.ResultFactory;
 import com.example.MeetingStoneServer.service.CourseService;
 import com.example.MeetingStoneServer.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -53,5 +56,13 @@ public class CourseController {
             course.setAssist(user.getId());
         courseService.update(course);
         return ResultFactory.buildSuccessResult(null);
+    }
+
+    @CrossOrigin
+    @GetMapping("/searchCourse/{page}")
+    public Result searchWithPage(@PathVariable("page")int page,@RequestParam("kw")String kw){
+        Pageable pageable = PageRequest.of
+                (page-1,10, Sort.by(Sort.Direction.ASC,"id"));
+        return ResultFactory.buildSuccessResult(courseService.search(kw,pageable),courseService.count(kw));
     }
 }

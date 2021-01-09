@@ -52,7 +52,7 @@ export default {
                 });
             }
             this.editableTabsValue = activeName;
-            console.log(activeName)
+            console.log(activeName);
             this.editableTabs = tabs.filter(tab => tab.name !== targetName);
         },
         getGroupInfo(group) {

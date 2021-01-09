@@ -4,10 +4,12 @@ import com.example.MeetingStoneServer.dao.GroupDAO;
 import com.example.MeetingStoneServer.entity.Group;
 import com.example.MeetingStoneServer.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 public class GroupService {
@@ -37,5 +39,27 @@ public class GroupService {
 
     public List<Group> search(String keywords){
         return groupDAO.findAllByNameLikeOrInfoLike('%' + keywords + '%', '%' + keywords + '%');
+    }
+
+    public List<Group> search(String kw, Pageable pageable){
+        Pattern pattern = Pattern.compile("[0-9]+");
+        int id;
+        if(!pattern.matcher(kw).matches())
+            id = 0;
+        else
+            id = Integer.parseInt(kw);
+        return groupDAO.findAllByNameLikeOrLeader_UsernameLikeOrId
+                ('%' + kw + '%', '%' + kw + '%',id,pageable);
+    }
+
+    public int count(String kw){
+        Pattern pattern = Pattern.compile("[0-9]+");
+        int id;
+        if(!pattern.matcher(kw).matches())
+            id = 0;
+        else
+            id = Integer.parseInt(kw);
+        return groupDAO.countByNameLikeOrLeader_UsernameLikeOrId
+                ('%' + kw + '%', '%' + kw + '%',id);
     }
 }

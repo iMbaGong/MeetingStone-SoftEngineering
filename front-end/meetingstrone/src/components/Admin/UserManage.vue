@@ -1,19 +1,23 @@
 <template>
-    <div>
+    <div style="width: 80%;margin: 0 auto;">
         <el-table
             :data="userTable"
-            style="width: 100%">
+            style="width: 100%;">
+            <el-table-column
+                    label="编号"
+                    prop="id">
+            </el-table-column>
             <el-table-column
                 label="学号"
-                prop="date">
+                prop="usernum">
             </el-table-column>
             <el-table-column
                 label="姓名"
-                prop="name">
+                prop="username">
             </el-table-column>
             <el-table-column
                 align="right">
-                <template slot="header">
+                <template slot="header" slot-scope="scope">
                     <el-input
                         v-model="search"
                         @change="handleSearch"
@@ -33,6 +37,7 @@
                 </template>
             </el-table-column>
         </el-table>
+
         <el-pagination
             @current-change="handleCurrentChange"
             :current-page.sync="page.currentPage"
@@ -52,10 +57,17 @@ export default {
             search: '',
             page: {
                 currentPage: 1,
-                total: 0,
+                total: 17,
                 pageSize:10,
             },
         }
+    },
+    mounted(){
+        let _this = this;
+        _this.$axios.get("/searchUser/"+_this.page.currentPage+"?kw=").then(resp=>{
+            _this.userTable = resp.data.result;
+            _this.page.total = resp.data.result2;
+        })
     },
     methods: {
         handleEdit() {
@@ -65,10 +77,19 @@ export default {
 
         },
         handleSearch() {
-
+            let _this = this;
+            _this.page.currentPage = 1;
+            _this.$axios.get("/searchUser/"+_this.page.currentPage+"?kw="+_this.search).then(resp=>{
+                _this.userTable = resp.data.result;
+                _this.page.total = resp.data.result2;
+            })
         },
         handleCurrentChange() {
-
+            let _this = this;
+            _this.$axios.get("/searchUser/"+_this.page.currentPage+"?kw="+_this.search).then(resp=>{
+                _this.userTable = resp.data.result;
+                _this.page.total = resp.data.result2;
+            })
         }
     }
 }

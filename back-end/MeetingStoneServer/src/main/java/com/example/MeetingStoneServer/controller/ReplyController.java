@@ -17,6 +17,9 @@ import com.example.MeetingStoneServer.service.ReplyService;
 import com.example.MeetingStoneServer.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -114,5 +117,13 @@ public class ReplyController {
     @GetMapping("replyByApply")
     public Result replyByApply(@RequestParam("applyId")int id){
         return ResultFactory.buildSuccessResult(replyService.getByApply(id));
+    }
+
+    @CrossOrigin
+    @GetMapping("/searchReply/{page}")
+    public Result searchWithPage(@PathVariable("page")int page,@RequestParam("kw")String kw){
+        Pageable pageable = PageRequest.of
+                (page-1,10, Sort.by(Sort.Direction.ASC,"id"));
+        return ResultFactory.buildSuccessResult(replyService.search(kw,pageable),replyService.count(kw));
     }
 }

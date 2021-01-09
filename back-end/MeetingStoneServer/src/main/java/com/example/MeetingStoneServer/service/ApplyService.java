@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 public class ApplyService {
@@ -37,8 +38,8 @@ public class ApplyService {
         return applyDAO.findAllByCourseIsInAndTitleLike(courses,title);
     }
 
-    public List<Apply> search(String keyword){
-        return applyDAO.findAllByTitleLike(keyword);
+    public List<Apply> search(String kw){
+        return applyDAO.findAllByTitleLike('%' + kw + '%');
     }
     public List<Apply> search(Collection<Course> courses, User user){
         List<Integer> list = new ArrayList<Integer>();
@@ -49,5 +50,29 @@ public class ApplyService {
 
     public List<Apply> getByUserId(int id){
         return applyDAO.findAllByApplicant_Id(id);
+    }
+
+    public List<Apply> search(String kw,Pageable pageable){
+        Pattern pattern = Pattern.compile("[0-9]+");
+        int id;
+        if(!pattern.matcher(kw).matches())
+            id = 0;
+        else
+            id = Integer.parseInt(kw);
+        return applyDAO.findAllByTitleLikeOrApplicant_UsernameLikeOrTagsLikeOrId
+                ('%' + kw + '%', '%' + kw + '%','%' + kw + '%',id,pageable);
+    }
+
+    public int count(String kw) {
+        Pattern pattern = Pattern.compile("[0-9]+");
+        int id;
+        if(!pattern.matcher(kw).matches())
+            id = 0;
+        else
+            id = Integer.parseInt(kw);
+        return applyDAO.countByTitleLikeOrApplicant_UsernameLikeOrTagsLikeOrId('%' + kw + '%', '%' + kw + '%', '%' + kw + '%',id);
+    }
+    public List<Apply> searchByState(int state){
+        return applyDAO.findAllByState(state);
     }
 }

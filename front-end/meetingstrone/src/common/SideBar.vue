@@ -4,7 +4,7 @@
             class="el-menu-vertical-demo"
             @open="handleOpen"
             @close="handleClose"
-            :collapse="isCollapse"
+            :collapse="$store.state.isCollapse"
             style="height: 100%"
     >
         <el-menu-item index="UserManage">
@@ -31,7 +31,7 @@
         name: "SideBar",
         data(){
             return{
-                isCollapse:true,
+
             }
         },
         methods:{

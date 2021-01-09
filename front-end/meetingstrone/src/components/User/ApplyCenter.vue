@@ -1,7 +1,7 @@
 <template>
     <div class="table">
         <el-table
-            :data="applyTable.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+            :data="applyTable"
             stripe
             max-height="1000px"
             :default-sort="{prop: 'ddlDate', order: 'descending'}"
@@ -106,11 +106,12 @@
                 </template>
             </el-table-column>
             <el-table-column align="right">
-                <template slot="header">
+                <template slot="header" slot-scope="scope">
                     <el-input
                         v-model="search"
                         size="mini"
-                        placeholder="输入关键字搜索"/>
+                        placeholder="输入关键字搜索"
+                    />
                 </template>
                 <template slot-scope="scope">
                     <el-button

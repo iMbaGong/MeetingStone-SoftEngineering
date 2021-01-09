@@ -8,6 +8,9 @@ import com.example.MeetingStoneServer.service.CourseService;
 import com.example.MeetingStoneServer.service.GroupService;
 import com.example.MeetingStoneServer.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -94,5 +97,13 @@ public class GroupController {
     Result createGroup(@RequestBody Group group){
         groupService.addOrUpdate(group);
         return ResultFactory.buildSuccessResult(null);
+    }
+
+    @CrossOrigin
+    @GetMapping("/searchGroup/{page}")
+    public Result searchWithPage(@PathVariable("page")int page,@RequestParam("kw")String kw){
+        Pageable pageable = PageRequest.of
+                (page-1,10, Sort.by(Sort.Direction.ASC,"id"));
+        return ResultFactory.buildSuccessResult(groupService.search(kw,pageable),groupService.count(kw));
     }
 }

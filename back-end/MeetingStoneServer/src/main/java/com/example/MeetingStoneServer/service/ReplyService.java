@@ -3,9 +3,11 @@ package com.example.MeetingStoneServer.service;
 import com.example.MeetingStoneServer.dao.ReplyDAO;
 import com.example.MeetingStoneServer.entity.Reply;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 public class ReplyService {
@@ -31,5 +33,24 @@ public class ReplyService {
         return replyDAO.findAllByApply_Id(id);
     }
 
+    public List<Reply> search(String kw, Pageable pageable) {
+        Pattern pattern = Pattern.compile("[0-9]+");
+        int id;
+        if(!pattern.matcher(kw).matches())
+            id = 0;
+        else
+            id = Integer.parseInt(kw);
+        return replyDAO.findAllByRemarkLikeOrApply_TitleLikeOrResponder_UsernameLikeOrId('%' + kw + '%', '%' + kw + '%','%' + kw + '%',id,pageable);
+    }
+
+    public int count(String kw) {
+        Pattern pattern = Pattern.compile("[0-9]+");
+        int id;
+        if(!pattern.matcher(kw).matches())
+            id = 0;
+        else
+            id = Integer.parseInt(kw);
+        return replyDAO.countByRemarkLikeOrApply_TitleLikeOrResponder_UsernameLikeOrId('%' + kw + '%', '%' + kw + '%', '%' + kw + '%',id);
+    }
 
 }

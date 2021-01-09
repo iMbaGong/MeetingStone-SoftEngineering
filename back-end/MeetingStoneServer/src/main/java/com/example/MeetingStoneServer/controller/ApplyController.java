@@ -64,16 +64,18 @@ public class ApplyController {
     }
 
     @CrossOrigin
-    @GetMapping("searchApply")
+    @GetMapping("searchApply/{state}/{page}")
     public Result searchApply(
-            @RequestHeader("token")String token,
-                                @RequestParam("pageSize")int pageSize,
-                                @RequestParam("pageNum")int pageNum,
-                                @RequestParam("keyword")String keyword){
-        User user = userService.getById(jwtConfig.getUserId(token));
-        keyword = keyword.equals("#")?"%":keyword;
-        Pageable pageable = PageRequest.of(pageNum,pageSize, Sort.by(Sort.Direction.ASC,"crtDate"));
-        return ResultFactory.buildSuccessResult(ApplyDTO.toDTO(applyService.search(user.getCourses(),keyword)));
+                                @PathVariable("page")int page,
+                                @PathVariable("state")int state,
+                                @RequestParam("kw")String kw){
+
+        Pageable pageable = PageRequest.of(page-1,10, Sort.by(Sort.Direction.ASC,"id"));
+        if(state==0){
+            List<Apply> list = applyService.searchByState(state);
+            return ResultFactory.buildSuccessResult(ApplyDTO.toDTO(list),list.size());
+        }
+        return ResultFactory.buildSuccessResult(ApplyDTO.toDTO(applyService.search(kw,pageable)),applyService.count(kw));
     }
 
     @CrossOrigin
@@ -82,6 +84,7 @@ public class ApplyController {
         User user = userService.getById(jwtConfig.getUserId(token));
         return ResultFactory.buildSuccessResult(ApplyDTO.toDTO(applyService.search(user.getCourses(),user)));
     }
+
 
 
 }

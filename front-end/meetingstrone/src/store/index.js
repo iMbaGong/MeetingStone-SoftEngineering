@@ -5,13 +5,13 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-
         token:window.localStorage.getItem('token'),
         user:{
             id:window.localStorage.getItem('id'),
             username:window.localStorage.getItem('username'),
             usernum:window.localStorage.getItem('usernum'),
-        }
+        },
+        isCollapse:false,
     },
     mutations: {
         login (state, loginInfo) {
@@ -29,6 +29,10 @@ export default new Vuex.Store({
             window.localStorage.removeItem('id');
             window.localStorage.removeItem('username');
             window.localStorage.removeItem('usernum')
+        },
+        collapse(state,is){
+            console.log("collapse:"+is);
+            state.isCollapse = is;
         }
     }
 })
