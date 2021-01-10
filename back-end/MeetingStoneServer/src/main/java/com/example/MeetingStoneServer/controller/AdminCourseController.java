@@ -66,4 +66,11 @@ public class AdminCourseController {
         courseService.update(course);
         return ResultFactory.buildSuccessResult(null);
     }
+
+    @CrossOrigin
+    @GetMapping("course/remove")
+    public Result remove(@RequestParam("courseId")int id){
+        courseService.remove(id);
+        return ResultFactory.buildSuccessResult(null);
+    }
 }

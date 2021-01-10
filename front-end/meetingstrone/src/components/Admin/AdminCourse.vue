@@ -32,11 +32,21 @@
                             size="mini"
                             @click="handleEdit(scope.$index, scope.row)">查看详情
                     </el-button>
-                    <el-button
-                            size="mini"
-                            type="danger"
-                            @click="handleDelete(scope.$index, scope.row)">删除
-                    </el-button>
+                    <el-popconfirm
+                            confirm-button-text='确定'
+                            cancel-button-text='取消'
+                            icon="el-icon-info"
+                            icon-color="red"
+                            title="确定要删除课程吗？"
+                            style="margin-left: 10px"
+                            @confirm="handleDelete(scope.$index, scope.row)"
+                    >
+                        <el-button
+                                size="mini"
+                                type="danger"
+                                slot="reference">删除
+                        </el-button>
+                    </el-popconfirm>
                 </template>
             </el-table-column>
         </el-table>
@@ -156,8 +166,17 @@
                 this.searchList.push(course.teacher);
                 this.dialogTableVisible = true
             },
-            handleDelete() {
-
+            handleDelete(index,course) {
+                let _this = this;
+                _this.$axios.get("/admin/course/remove?groupId=" + course.id).then(resp => {
+                    if(resp.data.code ===200){
+                        _this.$message({
+                            type: 'success',
+                            message: '操作成功!'
+                        });
+                        _this.handleCurrentChange()
+                    }
+                })
             },
             handleSearch() {
                 let _this = this;

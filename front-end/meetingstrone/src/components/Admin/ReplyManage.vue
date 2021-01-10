@@ -39,6 +39,21 @@
                             size="mini"
                             @click="handleEdit(scope.$index, scope.row)">查看详情
                     </el-button>
+                    <el-popconfirm
+                            confirm-button-text='确定'
+                            cancel-button-text='取消'
+                            icon="el-icon-info"
+                            icon-color="red"
+                            title="确定要删除请求吗？"
+                            style="margin-left: 10px"
+                            @confirm="handleDelete(scope.$index, scope.row)"
+                    >
+                        <el-button
+                                size="mini"
+                                type="danger"
+                                slot="reference">删除
+                        </el-button>
+                    </el-popconfirm>
                 </template>
             </el-table-column>
         </el-table>

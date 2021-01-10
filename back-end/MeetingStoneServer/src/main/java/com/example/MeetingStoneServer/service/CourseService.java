@@ -15,37 +15,41 @@ public class CourseService {
     @Autowired
     CourseDAO courseDAO;
 
-    public Course getById(int id){
+    public Course getById(int id) {
         return courseDAO.findById(id).orElse(null);
     }
 
-    public List<Course> getByUser(User user){
-        return courseDAO.findAllByStudentsContainingOrTeacher_Id(user,user.getId());
+    public void remove(int id) {
+        courseDAO.deleteById(id);
     }
 
-    public void update(Course course){
+    public List<Course> getByUser(User user) {
+        return courseDAO.findAllByStudentsContainingOrTeacher_Id(user, user.getId());
+    }
+
+    public void update(Course course) {
         courseDAO.save(course);
     }
 
-    public List<Course> search(String kw, Pageable pageable){
+    public List<Course> search(String kw, Pageable pageable) {
         Pattern pattern = Pattern.compile("[0-9]+");
         int id;
-        if(!pattern.matcher(kw).matches())
+        if (!pattern.matcher(kw).matches())
             id = 0;
         else
             id = Integer.parseInt(kw);
         return courseDAO.findAllByNameLikeOrTeacher_UsernameLikeOrId
-                ('%' + kw + '%', '%' + kw + '%',id,pageable);
+                ('%' + kw + '%', '%' + kw + '%', id, pageable);
     }
 
-    public int count(String kw){
+    public int count(String kw) {
         Pattern pattern = Pattern.compile("[0-9]+");
         int id;
-        if(!pattern.matcher(kw).matches())
+        if (!pattern.matcher(kw).matches())
             id = 0;
         else
             id = Integer.parseInt(kw);
         return courseDAO.countByNameLikeOrTeacher_UsernameLikeOrId
-                ('%' + kw + '%', '%' + kw + '%',id);
+                ('%' + kw + '%', '%' + kw + '%', id);
     }
 }

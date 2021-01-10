@@ -26,6 +26,9 @@ public class UserService {
         User user = userDAO.findByUsernum(username);
         return null != user;
     }
+    public void remove(int id){
+        userDAO.deleteById(id);
+    }
 
     public User getById(int id) {
         return userDAO.findById(id).orElse(null);

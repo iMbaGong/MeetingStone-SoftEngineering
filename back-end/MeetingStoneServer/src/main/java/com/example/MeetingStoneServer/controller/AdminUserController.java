@@ -36,4 +36,11 @@ public class AdminUserController {
         user.setPassword(encodedPassword);
         return ResultFactory.buildSuccessResult(null);
     }
+
+    @CrossOrigin
+    @GetMapping("user/remove")
+    public Result remove(@RequestParam("userId")int id){
+        userService.remove(id);
+        return ResultFactory.buildSuccessResult(null);
+    }
 }
