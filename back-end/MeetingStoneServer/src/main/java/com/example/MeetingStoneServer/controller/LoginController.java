@@ -1,8 +1,10 @@
 package com.example.MeetingStoneServer.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.example.MeetingStoneServer.config.JwtConfig;
 import com.example.MeetingStoneServer.dto.LoginInfoDTO;
 import com.example.MeetingStoneServer.dto.UserDTO;
+import com.example.MeetingStoneServer.entity.Role;
 import com.example.MeetingStoneServer.result.Result;
 import com.example.MeetingStoneServer.entity.User;
 import com.example.MeetingStoneServer.result.ResultFactory;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class LoginController {
@@ -41,12 +45,19 @@ public class LoginController {
             return ResultFactory.buildFailResult("用户名或密码错误");
         }
         System.out.println(user.getUsernum()+" hello");
-        String token = jwtConfig.createToken(user.getId()+"");
+        List<String> roles = new ArrayList<>();
+        for (Role role :
+                user.getRoles()) {
+            roles.add(role.getRole());
+        }
+
+        String token = jwtConfig.createToken(user.getId()+"",JSONArray.toJSONString(roles));
         LoginInfoDTO loginInfoDTO = new LoginInfoDTO();
         loginInfoDTO.setId(user.getId());
         loginInfoDTO.setToken(token);
         loginInfoDTO.setUsername(user.getUsername());
         loginInfoDTO.setUsernum(user.getUsernum());
+        loginInfoDTO.setRoles(roles);
         return ResultFactory.buildSuccessResult(loginInfoDTO);
     }
 
@@ -92,5 +103,21 @@ public class LoginController {
         return ResultFactory.buildSuccessResult(null);
     }
 
+    @CrossOrigin
+    @ResponseBody
+    @GetMapping(value = "api/admin/auth")
+    public Result adminAuth(){
+        return ResultFactory.buildSuccessResult(null);
+    }
+
+    @CrossOrigin
+    @GetMapping("api/setPassword")
+    public Result searchWithPage(@RequestParam("pw")String pw,@RequestHeader("token")String token){
+        User user = userService.getById(jwtConfig.getUserId(token));
+        String encodedPassword = new SimpleHash("md5", pw, user.getSalt(), hashTimes).toString();
+        user.setPassword(encodedPassword);
+        userService.add(user);
+        return ResultFactory.buildSuccessResult(null);
+    }
 }
 

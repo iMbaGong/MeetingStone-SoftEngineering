@@ -125,6 +125,10 @@ export default new VueRouter({
             path: "/AdminIndex",
             name: "AdminIndex",
             component: AdminIndex,
+            meta: {
+                requireAuth: true,
+                requireAdmin: true
+            },
         },
         {
             path: "/test",

@@ -5,6 +5,7 @@
       <i class="el-icon-s-unfold" v-if="isCollapse" style="font-size: 30px;"></i>
     </div>
     <i class="el-icon-switch-button" v-on:click="logout" style="font-size: 20px;float: right"></i>
+    <span @click="$router.replace('index')" style="float: right;margin: -10px 25px 0">用户页面</span>
   </el-card>
 </template>
 
@@ -45,6 +46,7 @@
     height: 50px;
     opacity: 0.85;
     line-height: 40px;
+    width: 100%;
   }
   .el-icon-switch-button {
     cursor: pointer;

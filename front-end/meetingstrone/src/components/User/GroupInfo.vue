@@ -43,9 +43,6 @@
                 </template>
                 <span class="content">{{ tranDate(group.crtDate) }}</span>
             </el-form-item>
-            <el-form-item>
-
-            </el-form-item>
             <el-form-item style="margin-top: 30px">
                 <el-button v-show=isLeader($store.state.user.id) @click="manageGroup">管理小组</el-button>
                 <el-popconfirm

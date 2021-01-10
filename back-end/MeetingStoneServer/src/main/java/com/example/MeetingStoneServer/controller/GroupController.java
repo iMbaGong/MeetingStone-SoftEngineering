@@ -106,4 +106,6 @@ public class GroupController {
                 (page-1,10, Sort.by(Sort.Direction.ASC,"id"));
         return ResultFactory.buildSuccessResult(groupService.search(kw,pageable),groupService.count(kw));
     }
+
+
 }

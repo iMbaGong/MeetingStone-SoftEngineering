@@ -1,7 +1,7 @@
 <template>
     <div style="width: 80%;margin: 0 auto;">
         <el-table
-                :data="groupTable"
+                :data="groupTable.slice((page.currentPage-1)*page.pageSize,page.currentPage*page.pageSize)"
                 style="width: 100%;">
             <el-table-column
                     label="编号"
@@ -74,7 +74,7 @@
                 </el-form-item>
                 <el-form-item label="小组简介" label-width="80px">
                     <el-input type="textarea"
-                            v-model="groupInfo.change.info"
+                              v-model="groupInfo.change.info"
                     >
                     </el-input>
                 </el-form-item>
@@ -157,7 +157,8 @@
 
 
     export default {
-        name: "GroupManage",
+        name: "AdminGroup",
+        props:['tabData'],
         data() {
             return {
                 groupTable: [],
@@ -169,7 +170,8 @@
                 },
                 groupInfo: {
                     origin: {},
-                    change: {}
+                    change: {},
+                    index:0
                 },
                 inputVisible: false,
                 inputValue: {},
@@ -179,11 +181,8 @@
             }
         },
         mounted() {
-            let _this = this;
-            _this.$axios.get("/searchGroup/" + _this.page.currentPage + "?kw=").then(resp => {
-                _this.groupTable = resp.data.result;
-                _this.page.total = resp.data.result2;
-            })
+            this.groupTable = this.tabData;
+            this.page.total = this.tabData.length;
         },
         computed: {
             groupType: function () {
@@ -212,9 +211,10 @@
         },
         methods: {
             handleEdit(index, group) {
-                this.groupInfo.origin = JSON.parse(JSON.stringify(group));
+                this.groupInfo.origin =group;
                 this.groupInfo.change = JSON.parse(JSON.stringify(group));
                 this.searchList = [];
+                this.groupInfo.index = index
                 this.dialogTableVisible = true
             },
             handleDelete() {
@@ -223,26 +223,28 @@
             handleSearch() {
                 let _this = this;
                 _this.page.currentPage = 1;
-                _this.$axios.get("/searchGroup/" + _this.page.currentPage + "?kw=" + _this.search).then(resp => {
-                    _this.groupTable = resp.data.result;
-                    _this.page.total = resp.data.result2;
-                })
+                this.groupTable =  this.tabData.filter(data => !this.search || data.name.toLowerCase().includes(this.search.toLowerCase()))
+                _this.page.total  = this.groupTable.length;
             },
             handleCurrentChange() {
                 let _this = this;
-                _this.$axios.get("/searchGroup/" + _this.page.currentPage + "?kw=" + _this.search).then(resp => {
-                    _this.groupTable = resp.data.result;
-                    _this.page.total = resp.data.result2;
-                })
+
             },
             handleUpdate() {
                 let _this = this;
-                _this.$axios.post('/createGroup' , this.groupInfo.change).then(resp => {
+                _this.$axios.post('/createGroup' , _this.groupInfo.change).then(resp => {
                     if (resp && resp.status === 200) {
                         _this.$message({
                             type: 'success',
                             message: '操作成功!'
                         });
+                        _this.groupTable[_this.groupInfo.index] = JSON.parse(JSON.stringify(_this.groupInfo.change));
+                        for (let i = 0; i < _this.tabData; i++) {
+                            if(_this.tabData[i].id===_this.groupInfo.change.id){
+                                _this.tabData[i] = JSON.parse(JSON.stringify(_this.groupInfo.change))
+                                break;
+                            }
+                        }
                         _this.handleCurrentChange();
                     }
                 }).catch(resp => {

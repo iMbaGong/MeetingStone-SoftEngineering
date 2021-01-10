@@ -4,11 +4,11 @@
             <admin-menu @clickMenu="clickMenu"></admin-menu>
         </el-aside>
         <el-container>
-            <el-header style="z-index: 1;margin-left: -21px;">
-                <Header style="position: absolute;width: 95%"></Header>
+            <el-header style="z-index: 1;padding: 0">
+                <Header style=""></Header>
             </el-header>
             <el-main style="padding: 0;margin-top: -9px;margin-left: -1px">
-                <el-tabs v-model="editableTabsValue" type="border-card" @tab-remove="removeTab" style="height: 99%">
+                <el-tabs v-model="editableTabsValue" type="border-card" @tab-remove="removeTab" style="height: 99.5%">
                     <el-tab-pane name="menu:0" label="首页">
                         <admin-overview/>
                     </el-tab-pane>
@@ -19,7 +19,7 @@
                             :name="item.name"
                             closable
                     >
-                        <component v-bind:is="item.component"></component>
+                        <component v-bind:is="item.component" @createTab="createTab" :tabData="tabData"></component>
                     </el-tab-pane>
                 </el-tabs>
             </el-main>
@@ -50,6 +50,7 @@
                 dialogVisible: false,
                 editableTabsValue: 'menu:0',
                 editableTabs: [],
+                tabData:{}
             }
         },
         mounted() {
@@ -75,6 +76,18 @@
                 console.log(activeName)
                 this.editableTabs = tabs.filter(tab => tab.name !== targetName);
             },
+            createTab(tabInfo){
+                let _this = this;
+                for (let i = 0; i < _this.editableTabs.length; i++) {
+                    if (_this.editableTabs[i].name === tabInfo.tab.name) {
+                        _this.editableTabsValue = tabInfo.tab.name;
+                        return;
+                    }
+                }
+                _this.editableTabs.push(tabInfo.tab);
+                _this.tabData = tabInfo.data;
+                _this.editableTabsValue = tabInfo.tab.name;
+            },
             clickMenu(index) {
                 let _this = this;
                 for (let i = 0; i < _this.editableTabs.length; i++) {
@@ -87,7 +100,7 @@
                 switch (index) {
                     case 1: {
                         _this.editableTabs.push({
-                            title: "成员管理",
+                            title: "用户管理",
                             name: "menu:" + index,
                             component: UserManage
                         });
@@ -143,6 +156,6 @@
 
 <style scoped>
     #admin-body {
-        height: 95vh;
+        height: 98vh;
     }
 </style>

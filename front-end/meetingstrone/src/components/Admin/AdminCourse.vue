@@ -1,7 +1,7 @@
 <template>
     <div style="width: 80%;margin: 0 auto;">
         <el-table
-                :data="courseTable"
+                :data="courseTable.slice((page.currentPage-1)*page.pageSize,page.currentPage*page.pageSize)"
                 style="width: 100%;">
             <el-table-column
                     label="编号"
@@ -120,7 +120,8 @@
     import CourseMember from "./CourseMember";
 
     export default {
-        name: "CourseManage",
+        name: "AdminCourse",
+        props:['tabData'],
         components:{
         },
         data() {
@@ -135,7 +136,7 @@
                 courseInfo: {
                     origin: {},
                     change: {},
-
+                    index:0,
                 },
                 searchList:[],
                 loading:false,
@@ -143,17 +144,15 @@
             }
         },
         mounted() {
-            let _this = this;
-            _this.$axios.get("/searchCourse/" + _this.page.currentPage + "?kw=").then(resp => {
-                _this.courseTable = resp.data.result;
-                _this.page.total = resp.data.result2;
-            })
+            this.courseTable = this.tabData;
+            this.page.total = this.tabData.length;
         },
         methods: {
             handleEdit(index,course) {
                 this.courseInfo.origin = JSON.parse(JSON.stringify(course));
                 this.courseInfo.change = JSON.parse(JSON.stringify(course));
                 this.searchList = [];
+                this.courseInfo.index = index
                 this.searchList.push(course.teacher);
                 this.dialogTableVisible = true
             },
@@ -163,17 +162,12 @@
             handleSearch() {
                 let _this = this;
                 _this.page.currentPage = 1;
-                _this.$axios.get("/searchCourse/" + _this.page.currentPage + "?kw=" + _this.search).then(resp => {
-                    _this.courseTable = resp.data.result;
-                    _this.page.total = resp.data.result2;
-                })
+                _this.courseTable =  this.tabData.filter(data => !_this.search || data.name.toLowerCase().includes(this.search.toLowerCase()))
+                _this.page.total  = this.courseTable.length;
             },
             handleCurrentChange() {
                 let _this = this;
-                _this.$axios.get("/searchCourse/" + _this.page.currentPage + "?kw=" + _this.search).then(resp => {
-                    _this.courseTable = resp.data.result;
-                    _this.page.total = resp.data.result2;
-                })
+
             },
             handleUpdate() {
                 let _this = this;
@@ -183,6 +177,14 @@
                             type: 'success',
                             message: '保存成功!'
                         });
+                        console.log(_this.courseTable[_this.courseInfo.index])
+                        _this.courseTable[_this.courseInfo.index] = JSON.parse(JSON.stringify(_this.courseInfo.change));
+                        for (let i = 0; i < _this.tabData; i++) {
+                            if(_this.tabData[i].id===_this.courseInfo.change.id){
+                                _this.tabData[i] = JSON.parse(JSON.stringify(_this.courseInfo.change))
+                                break;
+                            }
+                        }
                         _this.handleCurrentChange();
                     }
                 }).catch(resp => {
@@ -236,16 +238,20 @@
                         }
                     });
                 } else {
-                    let tabInfo = {
-                        tab: {
-                            name: "CourseMember:" + this.courseInfo.origin.id,
-                            title: this.courseInfo.origin.name + "的成员",
-                            component: CourseMember
-                        },
-                        data: this.courseInfo.origin
-                    };
-                    _this.dialogTableVisible = false;
-                    _this.$emit("createTab", tabInfo)
+                    _this.$axios.get('/courseMembers?courseId=' + this.courseInfo.origin.id,).then(resp => {
+                        if (resp && resp.status === 200) {
+                            let tabInfo = {
+                                tab: {
+                                    name: "CourseMember:" + this.courseInfo.origin.id,
+                                    title: this.courseInfo.origin.name + "的成员",
+                                    component: CourseMember
+                                },
+                                data: resp.data.result
+                            };
+                            _this.dialogTableVisible = false;
+                            _this.$emit("createTab", tabInfo)
+                        }
+                    });
                 }
 
             },

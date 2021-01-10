@@ -1,5 +1,6 @@
 package com.example.MeetingStoneServer.config;
 
+import com.alibaba.fastjson.JSONArray;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -7,6 +8,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -25,11 +28,13 @@ public class JwtConfig {
      * @param subject 主题
      * @return
      */
-    public String createToken (String subject){
+    public String createToken (String subject,String roles){
         Date nowDate = new Date();
         Date expireDate = new Date(nowDate.getTime() + expire * 1000);//过期时间
-
+        HashMap hashMap = new HashMap();
+        hashMap.put("roles",roles);
         return Jwts.builder()
+                .addClaims(hashMap)
                 .setHeaderParam("typ", "JWT")
                 .setSubject(subject)
                 .setIssuedAt(nowDate)
@@ -53,6 +58,11 @@ public class JwtConfig {
 
     public int getUserId(String token){
         return Integer.parseInt(getTokenClaim(token).getSubject());
+    }
+    public List<String> getRoles(String token){
+        String roles =  getTokenClaim(token).get("roles",String.class);
+        JSONArray jsonArray = JSONArray.parseArray(roles);
+        return  jsonArray.toJavaList(String.class);
     }
     /**
      * 验证token是否过期失效

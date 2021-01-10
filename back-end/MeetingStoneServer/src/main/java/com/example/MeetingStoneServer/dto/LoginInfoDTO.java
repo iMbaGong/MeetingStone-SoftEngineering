@@ -3,6 +3,8 @@ package com.example.MeetingStoneServer.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class LoginInfoDTO {
@@ -10,4 +12,5 @@ public class LoginInfoDTO {
     String username;
     String usernum;
     String token;
+    List<String> roles;
 }

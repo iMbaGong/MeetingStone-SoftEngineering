@@ -12,7 +12,7 @@ axios.defaults.baseURL = 'http://localhost:8443/api'//http://47.94.34.136:8443/a
 //axios.defaults.withCredentials = true
 // 全局注册，之后可在其他组件中通过 this.$axios 发送数据
 
-axios.interceptors.request.use(config=>{
+axios.interceptors.request.use(config => {
     let token = localStorage.getItem('token')
     if (token) {
         config.headers['token'] = token;
@@ -26,41 +26,51 @@ Vue.config.productionTip = false
 Vue.use(ElementUI)
 
 
-
-
 router.beforeEach((to, from, next) => {
-    console.log("route["+"to:"+to.name+"  from:"+from.name+"]")
-      if (to.meta.requireAuth) {
-        if (store.state.token) {
-            console.log("token found!")
-            axios.get('/authentication').then(resp => {
-                console.log(resp)
-                if (resp.data.code === 200){
-                    console.log("auth!")
-                    next()
-                }else {
-                    console.log("expired!")
-                    next({
-                        path: 'login',
-                        query: {redirect: to.fullPath}
-                    })
-                }
-            })
+        console.log("route[" + "to:" + to.name + "  from:" + from.name + "]");
+        if (to.meta.requireAuth) {
+            if (store.state.token) {
+                axios.get('/authentication').then(resp => {
+                    console.log(resp);
+                    if (resp.data.code === 200) {
+                        if (to.meta.requireAdmin) {
+                            axios.get('/admin/auth').then(resp => {
+                                console.log(resp);
+                                if (resp.data.code === 200) {
+                                    next()
+                                } else {
+                                    next({
+                                        path: 'Index',
+                                        query: {redirect: to.fullPath}
+                                    })
+                                }
+                            })
+                        }
+                        else
+                            next()
+                    } else {
+                        next({
+                            path: 'login',
+                            query: {redirect: to.fullPath}
+                        })
+                    }
+                })
+            } else {
+                next({
+                    path: 'login',
+                    query: {redirect: to.fullPath}
+                })
+            }
         } else {
-          next({
-            path: 'login',
-            query: {redirect: to.fullPath}
-          })
+            next()
         }
-      } else {
-        next()
-      }
+
     }
 )
 
 new Vue({
-  render: h => h(App),
-  router,//使用路由配置
-  store,
- //使用 Vuex 进行状态管理
+    render: h => h(App),
+    router,//使用路由配置
+    store,
+    //使用 Vuex 进行状态管理
 }).$mount('#app')

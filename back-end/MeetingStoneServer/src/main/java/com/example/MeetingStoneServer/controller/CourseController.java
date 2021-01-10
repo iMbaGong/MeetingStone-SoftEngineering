@@ -40,6 +40,17 @@ public class CourseController {
     }
 
     @CrossOrigin
+    @GetMapping("/userCourses")
+    Result getCourseById(@RequestParam("userId")int id) {
+        List<Course> courses = courseService.getByUser(userService.getById(id));
+        List<CourseDTO> courseDTOS = new ArrayList<>();
+        for (Course cours : courses) {
+            courseDTOS.add(CourseDTO.toDTO(cours, userService.getById(cours.getAssist())));
+        }
+        return ResultFactory.buildSuccessResult(courseDTOS);
+    }
+
+    @CrossOrigin
     @GetMapping("/courseMembers")
     Result getMembers(@RequestParam("courseId") int id) {
         return ResultFactory.buildSuccessResult(courseService.getById(id).getStudents());
@@ -63,6 +74,11 @@ public class CourseController {
     public Result searchWithPage(@PathVariable("page")int page,@RequestParam("kw")String kw){
         Pageable pageable = PageRequest.of
                 (page-1,10, Sort.by(Sort.Direction.ASC,"id"));
-        return ResultFactory.buildSuccessResult(courseService.search(kw,pageable),courseService.count(kw));
+        List<Course> courses = courseService.search(kw,pageable);
+        List<CourseDTO> courseDTOS = new ArrayList<>();
+        for (Course cours : courses) {
+            courseDTOS.add(CourseDTO.toDTO(cours, userService.getById(cours.getAssist())));
+        }
+        return ResultFactory.buildSuccessResult(courseDTOS,courseService.count(kw));
     }
 }

@@ -3,6 +3,7 @@ package com.example.MeetingStoneServer.service;
 import com.example.MeetingStoneServer.dao.GroupDAO;
 import com.example.MeetingStoneServer.entity.Course;
 import com.example.MeetingStoneServer.entity.Group;
+import com.example.MeetingStoneServer.entity.Role;
 import com.example.MeetingStoneServer.entity.User;
 import com.example.MeetingStoneServer.dao.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,6 @@ public class UserService {
     public List<Group> getJoinedGroups(int id) {
         User user = userDAO.findById(id).orElse(null);
         assert user != null;
-        System.out.println("User:" + user.getUsernum() + " try to get groups");
         return user.getGroups();
     }
 
@@ -87,5 +87,11 @@ public class UserService {
         else
             id = Integer.parseInt(kw);
         return userDAO.countByUsernameLikeOrUsernumLikeOrId('%' + kw + '%', '%' + kw + '%',id);
+    }
+
+    public List<Role> getRoleById(int id){
+        User user = userDAO.findById(id).orElse(null);
+        assert(user!=null);
+        return user.getRoles();
     }
 }

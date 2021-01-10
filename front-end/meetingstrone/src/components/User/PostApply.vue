@@ -24,7 +24,6 @@
                 </el-option>
             </el-select>
         </el-form-item>
-
         <el-form-item label="请求范围" prop="range">
             <el-select v-model="form.range" @change="selectRange" placeholder="课内请求or课外请求" style="width: 100%">
                 <el-option label="课内请求" value="3"></el-option>
