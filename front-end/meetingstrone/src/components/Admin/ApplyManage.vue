@@ -321,7 +321,16 @@
                 })
             },
             handleUpdate() {
-
+                let _this =this;
+                _this.$axios.post("/admin/apply/basic",_this.applyInfo.change).then(resp=>{
+                     if(resp.data.code === 200){
+                         _this.$message({
+                             type: 'success',
+                             message: '操作成功!'
+                         });
+                         _this.handleCurrentChange()
+                     }
+                })
             },
             showInput() {
                 if (this.applyInfo.change.tags.length === 3) {
@@ -356,7 +365,16 @@
                     this.userGroups.push(this.applyInfo.change.group);
             },
             reject() {
-
+                let _this =this;
+                _this.$axios.get("/admin/apply/reject?applyId="+_this.applyInfo.change.id).then(resp=>{
+                    if(resp.data.code === 200){
+                        _this.$message({
+                            type: 'success',
+                            message: '操作成功!'
+                        });
+                        _this.handleCurrentChange()
+                    }
+                })
             },
             findUser(query) {
                 if (query !== '') {

@@ -1,10 +1,24 @@
 <template>
-    <div></div>
 </template>
 
 <script>
+
     export default {
-        name: "AdminOverview"
+        name: "AdminOverview",
+        components:{
+
+        },
+        data(){
+            return{
+
+            }
+        },
+        methods:{
+            init(){
+
+            }
+        }
+
     }
 </script>
 

@@ -60,9 +60,15 @@
         <el-pagination
                 @current-change="handleCurrentChange"
                 :current-page.sync="page.currentPage"
+                style="margin-top: 10px"
                 :page-size="page.pageSize"
                 :total="page.total">
         </el-pagination>
+        <el-dialog
+                title="组队请求信息"
+                :visible.sync="dialogTableVisible"
+                style="width: 800px;margin: auto auto">
+        </el-dialog>
     </div>
 </template>
 
@@ -78,6 +84,7 @@
                     total: 0,
                     pageSize:10,
                 },
+                dialogTableVisible:false
             }
         },
         mounted(){

@@ -148,7 +148,6 @@ export default {
         onSubmit() {
             this.$refs['postForm'].validate((valid) => {
                 if (valid) {
-                    console.log('submit![日期：' + this.form.ddlTime + '],[' + this.form.group + ']');
                     var _this = this;
                     let type;
                     if (_this.form.type === "1") {

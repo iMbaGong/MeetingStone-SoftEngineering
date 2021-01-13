@@ -74,6 +74,10 @@
             <span style="float: left;margin-left: 20%">
                 {{ reply.remark }}
             </span>
+            <h3 align="left" style="margin-left: 10%;margin-top: 5px">创建时间:</h3>
+            <span style="float: left;margin-left: 20%">
+                {{ reply.apply.ddlDate.split('T').join(' ').split('.').splice(0, 1).join('') }}
+            </span>
             <el-button type="danger" icon="el-icon-delete" circle style="float: right;margin:0 10px 15px 0"
                        @click="withdraw(index,reply.id)"></el-button>
         </el-collapse-item>

@@ -52,6 +52,9 @@ public class ApplyService {
         return applyDAO.findAllByApplicant_Id(id);
     }
 
+    public Apply getById(int id){
+        return applyDAO.findById(id).orElse(null);
+    }
     public List<Apply> search(String kw,Pageable pageable){
         Pattern pattern = Pattern.compile("[0-9]+");
         int id;
